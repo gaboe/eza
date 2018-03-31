@@ -1,7 +1,12 @@
 import * as React from "react";
 import { SchemasQueryComponent, SCHEMAS_QUERY } from "../../graphql/queries/schemas/SchemasQuery";
 import { List } from "semantic-ui-react";
-class Schemas extends React.Component {
+
+type Props = {
+  onSchemaClick: (schemaName: string) => void;
+};
+
+class Schemas extends React.Component<Props> {
   render() {
     return (
       <>
@@ -10,11 +15,11 @@ class Schemas extends React.Component {
             if (!response.loading && response.data) {
               return (
                 <>
-                  <List animated={true} celled={true}>
+                  <List size="large" divided={true} animated={true} celled={true}>
                     {
                       response.data.schemas.map(x => {
                         return (
-                          <List.Item key={x.name}>
+                          <List.Item key={x.name} onClick={() => this.props.onSchemaClick(x.name)}>
                             {x.name}
                           </List.Item>
                         );

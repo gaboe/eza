@@ -7,3 +7,15 @@ export interface GetSchemasQuery {
     name: string,
   } >,
 };
+
+export interface GetTablesBySchemaQueryVariables {
+  schemaName: string,
+};
+
+export interface GetTablesBySchemaQuery {
+  tables:  Array< {
+    __typename: "TableType",
+    name: string,
+    schemaName: string,
+  } >,
+};
