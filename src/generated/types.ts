@@ -44,7 +44,15 @@ export interface TableDetailQuery {
       referencedColumnName: string,
       referencingTableName: string,
       referencingColumnName: string,
-    } | null >,
+    } >,
+    referenced:  Array< {
+      __typename: "ReferenceConstrainType",
+      constrainName: string,
+      referencedTableName: string,
+      referencedColumnName: string,
+      referencingTableName: string,
+      referencingColumnName: string,
+    } >,
   } | null,
 };
 

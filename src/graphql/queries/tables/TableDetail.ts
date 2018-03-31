@@ -18,6 +18,13 @@ query TableDetail($tableName: String!) {
       referencedColumnName
       referencingTableName
       referencingColumnName
+    },
+    referenced {
+      constrainName
+      referencedTableName
+      referencedColumnName
+      referencingTableName
+      referencingColumnName
     }
   }
 }
