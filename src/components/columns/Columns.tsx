@@ -26,7 +26,7 @@ class Columns extends React.Component<Props> {
                   <Link to={`table/${this.props.tableName}`}>
                     <Button content="Detail" />
                   </Link>
-                  <List size="large" divided={true} animated={true} celled={true}>
+                  <List size="large" divided={true} celled={true}>
                     {
                       response.data.columns.map(x => {
                         return (
