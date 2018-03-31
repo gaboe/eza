@@ -1,3 +1,13 @@
+### .env file content
+
+PORT=3003
+
+REACT_APP_SERVER_URL=http://localhost:3000/graphql
+
+
+#eza
+Easy Admin
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
