@@ -96,16 +96,14 @@ class TableDetail extends React.Component<Props> {
                       </List>
                     </Col>
                   </Row>
-
+                  <Link to={`/${response.data.table.schemaName}-${response.data.table.name}`}>
+                    <Button content="Back" />
+                  </Link>
                 </>
               );
             }
           }
         </TableDetailQueryComponent >
-        <Link to="/">
-          <Button content="Back" />
-
-        </Link>
 
       </>
     );
