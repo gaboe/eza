@@ -3,9 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-cache-inmemory": "^1.1.12",
+    "apollo-client": "^2.2.8",
+    "apollo-link": "^1.2.1",
+    "apollo-link-error": "^1.0.7",
+    "apollo-link-http": "^1.5.3",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.8.0",
     "react": "^16.3.0",
+    "react-apollo": "^2.1.1",
     "react-dom": "^16.3.0",
-    "react-scripts-ts": "2.14.0"
+    "react-scripts-ts": "2.14.0",
+    "tslint": "^5.9.1"
   },
   "scripts": {
     "dev": "yarn start",
@@ -15,8 +24,10 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/graphql": "^0.12.7",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
+    "@types/prop-types": "^15.5.2",
     "@types/react": "^16.1.0",
     "@types/react-dom": "^16.0.4",
     "typescript": "^2.8.1"
