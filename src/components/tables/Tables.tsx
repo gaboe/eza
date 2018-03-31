@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TablesBySchemaQueryComponent, TABLES_BY_SCHEMA_QUERY } from "../../graphql/queries/tables/TablesBySchemaQuery";
-import { List } from "semantic-ui-react";
+import { List, Header } from "semantic-ui-react";
 import { GetTablesBySchemaQueryVariables } from "../../generated/types";
 import { Columns } from "../columns/Columns";
 import { Row, Col } from "react-grid-system";
@@ -12,7 +12,6 @@ type Props = {
 };
 
 class Tables extends React.Component<Props> {
-
   render() {
     const variables: GetTablesBySchemaQueryVariables = {
       schemaName: this.props.schemaName
@@ -28,17 +27,20 @@ class Tables extends React.Component<Props> {
                     return null;
                   }
                   return (
-                    <List size="large" divided={true} animated={true} celled={true}>
-                      {
-                        response.data.tables.map(x => {
-                          return (
-                            <List.Item key={x.name} onClick={() => this.props.onTableClick(x.name)}>
-                              {x.name}
-                            </List.Item>
-                          );
-                        })
-                      }
-                    </List>
+                    <>
+                      <Header content={`Tables of ${this.props.schemaName} schema `} />
+                      <List size="large" divided={true} animated={true} celled={true}>
+                        {
+                          response.data.tables.map(x => {
+                            return (
+                              <List.Item key={x.name} onClick={() => this.props.onTableClick(x.name)}>
+                                {x.name}
+                              </List.Item>
+                            );
+                          })
+                        }
+                      </List>
+                    </>
                   );
                 }
               }

@@ -22,7 +22,6 @@ class DatabaseExplorer extends React.Component<{}, State> {
     if (this.state.schemaName) {
       return (
         <>
-          <h1>{this.state.schemaName}</h1>
           <Tables
             schemaName={this.state.schemaName}
             tableName={this.state.tableName}

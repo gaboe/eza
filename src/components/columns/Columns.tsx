@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ColumsByTableQueryComponent, COLUMNS_BY_TABLE_QUERY } from "../../graphql/queries/columns/ColumnsByTableQuery";
 import { GetColumnsByTableNameQueryVariables } from "../../generated/types";
-import { List } from "semantic-ui-react";
+import { List, Header } from "semantic-ui-react";
 
 type Props = {
   tableName: string,
@@ -21,17 +21,20 @@ class Columns extends React.Component<Props> {
                 return null;
               }
               return (
-                <List size="large" divided={true} animated={true} celled={true}>
-                  {
-                    response.data.columns.map(x => {
-                      return (
-                        <List.Item key={x.name} >
-                          {x.name}
-                        </List.Item>
-                      );
-                    })
-                  }
-                </List>
+                <>
+                  <Header content={`Columns of ${this.props.tableName} table`} />
+                  <List size="large" divided={true} animated={true} celled={true}>
+                    {
+                      response.data.columns.map(x => {
+                        return (
+                          <List.Item key={x.name} >
+                            {x.name}
+                          </List.Item>
+                        );
+                      })
+                    }
+                  </List>
+                </>
               );
             }
           }

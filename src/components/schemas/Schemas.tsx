@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SchemasQueryComponent, SCHEMAS_QUERY } from "../../graphql/queries/schemas/SchemasQuery";
-import { List } from "semantic-ui-react";
+import { List, Header } from "semantic-ui-react";
 
 type Props = {
   onSchemaClick: (schemaName: string) => void;
@@ -15,6 +15,7 @@ class Schemas extends React.Component<Props> {
             if (!response.loading && response.data) {
               return (
                 <>
+                  <Header content="Schemas of db" />
                   <List size="large" divided={true} animated={true} celled={true}>
                     {
                       response.data.schemas.map(x => {
