@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ColumsByTableQueryComponent, COLUMNS_BY_TABLE_QUERY } from "../../graphql/queries/columns/ColumnsByTableQuery";
 import { GetColumnsByTableNameQueryVariables } from "../../generated/types";
-import { List, Header } from "semantic-ui-react";
-
+import { List, Header, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 type Props = {
   tableName: string,
 };
@@ -23,6 +23,9 @@ class Columns extends React.Component<Props> {
               return (
                 <>
                   <Header content={`Columns of ${this.props.tableName} table`} />
+                  <Link to={`table/${this.props.tableName}`}>
+                    <Button content="Detail" />
+                  </Link>
                   <List size="large" divided={true} animated={true} celled={true}>
                     {
                       response.data.columns.map(x => {
