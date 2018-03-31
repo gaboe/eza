@@ -5,12 +5,17 @@ import { Tables } from "../tables/Tables";
 
 type State = {
   schemaName: string,
+  tableName: string,
 };
 
 class DatabaseExplorer extends React.Component<{}, State> {
-  state = { schemaName: "" };
+  state = { schemaName: "", tableName: "" };
   onSchemaClick = (schemaName: string) => {
-    this.setState({ schemaName });
+    this.setState({ schemaName, tableName: "" });
+  }
+
+  onTableClick = (tableName: string) => {
+    this.setState({ tableName });
   }
 
   renderTables = () => {
@@ -18,7 +23,11 @@ class DatabaseExplorer extends React.Component<{}, State> {
       return (
         <>
           <h1>{this.state.schemaName}</h1>
-          <Tables schemaName={this.state.schemaName} />
+          <Tables
+            schemaName={this.state.schemaName}
+            tableName={this.state.tableName}
+            onTableClick={this.onTableClick}
+          />
         </>
       );
     }
