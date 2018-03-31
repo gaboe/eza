@@ -4,6 +4,7 @@ import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { Schemas } from "./components/schemas/Schemas";
+import { Row, Col } from "react-grid-system";
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -22,7 +23,11 @@ class App extends React.Component {
     return (
       <>
         <ApolloProvider client={client}>
-          <Schemas />
+          <Row>
+            <Col sm={3}>
+              <Schemas />
+            </Col>
+          </Row>
         </ApolloProvider>
       </>
     );
