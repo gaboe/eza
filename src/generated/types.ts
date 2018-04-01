@@ -1,6 +1,25 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface ColumnInputType {
+  schemaName: string,
+  tableName: string,
+  name: string,
+  dataType: string,
+};
+
+export interface AddPageMutationVariables {
+  columns: Array< ColumnInputType >,
+  pageName: string,
+};
+
+export interface AddPageMutation {
+  addPage:  {
+    __typename: "AppType",
+    cid: string,
+  },
+};
+
 export interface GetColumnsByTableNameQueryVariables {
   tableName: string,
 };
@@ -33,7 +52,8 @@ export interface TableDetailQuery {
     schemaName: string,
     columns:  Array< {
       __typename: "ColumnType",
-      position: number,
+      schemaName: string,
+      tableName: string,
       name: string,
       dataType: string,
     } >,

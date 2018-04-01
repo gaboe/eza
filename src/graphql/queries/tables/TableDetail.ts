@@ -8,7 +8,8 @@ query TableDetail($tableName: String!) {
     name
     schemaName
     columns {
-      position
+      schemaName
+      tableName
       name
       dataType
     }

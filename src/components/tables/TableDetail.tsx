@@ -2,12 +2,42 @@ import * as React from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { Header, List, Button, Checkbox } from "semantic-ui-react";
 import { TableDetailQueryComponent, TABLE_DETAIL_QUERY } from "../../graphql/queries/tables/TableDetail";
-import { TableDetailQueryVariables } from "../../generated/types";
+import {
+  TableDetailQueryVariables, TableDetailQuery, ColumnInputType, AddPageMutationVariables
+} from "../../generated/types";
 import { Col, Row } from "react-grid-system";
 import { Referenced } from "./Referenced";
 import { Referencing } from "./Referencing";
+import { append } from "ramda";
+import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutations/apps/AddPage";
 type Props = RouteComponentProps<{ name: string }>;
-class TableDetail extends React.Component<Props> {
+
+type Column = NonNullable<TableDetailQuery["table"]>["columns"][0];
+
+type State = {
+  checkedColumns: ColumnInputType[]
+};
+class TableDetail extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      checkedColumns: []
+    };
+  }
+  saveView = () => {
+    console.log(this.state.checkedColumns);
+  }
+
+  checkColumn = (c: Column) => {
+    if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
+      this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) });
+    } else {
+      const column: ColumnInputType = {
+        name: c.name, dataType: c.dataType, schemaName: c.schemaName, tableName: c.tableName
+      };
+      this.setState({ checkedColumns: append(column, this.state.checkedColumns) });
+    }
+  }
 
   render() {
     const variables: TableDetailQueryVariables = {
@@ -26,6 +56,7 @@ class TableDetail extends React.Component<Props> {
                   </>
                 );
               }
+
               return (
                 <>
                   <Row>
@@ -44,7 +75,7 @@ class TableDetail extends React.Component<Props> {
                           response.data.table.columns.map(x => {
                             return (
                               <List.Item key={x.name} >
-                                <Checkbox />
+                                <Checkbox onClick={() => this.checkColumn(x)} />
                                 {` [${x.dataType}]: ${x.name}`}
                               </List.Item>
                             );
@@ -55,6 +86,36 @@ class TableDetail extends React.Component<Props> {
                       <Referenced referenced={response.data.table.referenced} />
                       <Referencing referencing={response.data.table.referencing} />
 
+                      <AddPageMutationComponent mutation={ADD_PAGE_MUTATION}>
+                        {
+                          (mutation, data) => {
+                            if (data.loading
+                              || this.state.checkedColumns.length === 0) {
+                              return (null);
+                            }
+
+                            return (
+                              <>
+                                <Button
+                                  content="Save as view"
+                                  onClick={
+                                    () => {
+                                      if (!response.loading && response.data && response.data.table) {
+                                        const mutationVariables: AddPageMutationVariables = {
+                                          columns: this.state.checkedColumns,
+                                          pageName: response.data.table.name
+                                        };
+                                        console.log(mutationVariables);
+                                        mutation({ variables: mutationVariables });
+                                      }
+
+                                    }}
+                                />
+                              </>
+                            );
+                          }
+                        }
+                      </AddPageMutationComponent>
                     </Col>
                   </Row>
 

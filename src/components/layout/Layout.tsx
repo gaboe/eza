@@ -12,10 +12,10 @@ class Layout extends React.Component {
     return (
       <Sidebar.Pushable as={Segment}>
         <Sidebar as={Menu} animation="overlay" direction="top" visible={true} inverted={true}>
-          <Menu.Item name="database-expolorer">
+          <Menu.Item name="database-explorer">
             <Link to="/">
               <Icon name="find" />
-              Database Expolorer
+              Database Explorer
             </Link>
           </Menu.Item>
           <Menu.Item name="app">
