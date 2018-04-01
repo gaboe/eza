@@ -5,6 +5,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { HashRouter as Router } from "react-router-dom";
 import { Routes } from "./components/routes/Routes";
+import { Layout } from "./components/layout/Layout";
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -24,7 +25,9 @@ class App extends React.Component {
       <>
         <ApolloProvider client={client}>
           <Router>
-            <Routes />
+            <Layout>
+              <Routes />
+            </Layout>
           </Router>
         </ApolloProvider>
       </>
