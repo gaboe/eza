@@ -27,7 +27,7 @@ class SidebarLeftOverlay extends React.Component<Props> {
                 this.props.menuItems.length > 0 && orderBy(this.props.menuItems, [`${rankName}`], ["asc"]).map(x => {
                   return (
                     <Menu.Item key={x.name} name="database-explorer">
-                      <Link to="/app">
+                      <Link to={`/app/${x.pageCid}`}>
                         {x.name}
                       </Link>
                     </Menu.Item>

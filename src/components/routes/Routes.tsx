@@ -16,7 +16,7 @@ const Routes = () => {
         <Route exact={true} path="/" component={DatabaseExplorer} />
         <Route exact={true} path="/:schemaName-:tableName" component={DatabaseExplorer} />
         <Route path="/table/:name" component={TableDetail} />
-        <Route path="/app" component={GeneratedApp} />
+        <Route exact={true} path="/app/:cid?" component={GeneratedApp} />
       </ContenWrapper>
     </>
   );

@@ -48,11 +48,13 @@ export interface GetAppLayoutQuery {
     },
     menuItems:  Array< {
       __typename: "MenuItemType",
+      pageCid: string,
       name: string,
       rank: number,
     } >,
     pages:  Array< {
       __typename: "PageType",
+      cid: string,
       name: string,
       table:  {
         __typename: "PageTableType",

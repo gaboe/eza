@@ -10,10 +10,12 @@ const GET_APP_LAYOUT_QUERY = gql`
         name
       }
       menuItems {
+        pageCid
         name
         rank
       }
       pages{
+        cid
         name
         table{
           id
