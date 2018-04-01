@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { TableDetailQuery, TableDetailQueryVariables } from "../../../generated/types";
+import { TableDetailQuery, TableDetailQueryVariables } from "../../../generated-types/types";
 
 const TABLE_DETAIL_QUERY = gql`
 query TableDetail($tableName: String!) {

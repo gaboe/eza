@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TablesBySchemaQueryComponent, TABLES_BY_SCHEMA_QUERY } from "../../graphql/queries/tables/TablesBySchemaQuery";
 import { List, Header } from "semantic-ui-react";
-import { GetTablesBySchemaQueryVariables } from "../../generated/types";
+import { GetTablesBySchemaQueryVariables } from "../../generated-types/types";
 import { Columns } from "../columns/Columns";
 import { Row, Col } from "react-grid-system";
 

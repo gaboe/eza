@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import { AddPageMutationVariables, AddPageMutation } from "../../../generated/types";
+import { AddPageMutationVariables, AddPageMutation } from "../../../generated-types/types";
 
 const ADD_PAGE_MUTATION = gql`
 mutation AddPage($columns: [ColumnInputType!]!,$pageName: String!){

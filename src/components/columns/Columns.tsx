@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ColumsByTableQueryComponent, COLUMNS_BY_TABLE_QUERY } from "../../graphql/queries/columns/ColumnsByTableQuery";
-import { GetColumnsByTableNameQueryVariables } from "../../generated/types";
+import { GetColumnsByTableNameQueryVariables } from "../../generated-types/types";
 import { List, Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 type Props = {

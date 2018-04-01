@@ -1,6 +1,6 @@
 import * as React from "react";
 import { List, Header } from "semantic-ui-react";
-import { TableDetailQuery } from "../../generated/types";
+import { TableDetailQuery } from "../../generated-types/types";
 
 type Props = {
   referenced: NonNullable<TableDetailQuery["table"]>["referenced"]

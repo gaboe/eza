@@ -4,7 +4,7 @@ import { Header, List, Button, Checkbox } from "semantic-ui-react";
 import { TableDetailQueryComponent, TABLE_DETAIL_QUERY } from "../../graphql/queries/tables/TableDetail";
 import {
   TableDetailQueryVariables, TableDetailQuery, ColumnInputType, AddPageMutationVariables
-} from "../../generated/types";
+} from "../../generated-types/types";
 import { Col, Row } from "react-grid-system";
 import { Referenced } from "./Referenced";
 import { Referencing } from "./Referencing";
