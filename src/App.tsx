@@ -25,7 +25,7 @@ class App extends React.Component {
       <>
         <ApolloProvider client={client}>
           <Router>
-            <Layout>
+            <Layout >
               <Routes />
             </Layout>
           </Router>

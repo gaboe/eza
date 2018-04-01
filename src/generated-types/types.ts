@@ -34,6 +34,26 @@ export interface GetColumnsByTableNameQuery {
   } >,
 };
 
+export interface GetAppLayoutQueryVariables {
+  cid: string,
+};
+
+export interface GetAppLayoutQuery {
+  app:  {
+    __typename: "AppType",
+    cid: string,
+    description:  {
+      __typename: "AppDescriptionType",
+      name: string,
+    },
+    menuItems:  Array< {
+      __typename: "MenuItemType",
+      name: string,
+      rank: number,
+    } >,
+  } | null,
+};
+
 export interface GetSchemasQuery {
   schemas:  Array< {
     __typename: "SchemaType",
