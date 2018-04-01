@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Sidebar, Segment, Menu, Icon } from "semantic-ui-react";
+import { Sidebar, Segment, Menu } from "semantic-ui-react";
 import styled from "styled-components";
 import { GetAppLayoutQuery } from "../../generated-types/types";
 import { nameof } from "../../utils/Utils";
@@ -24,11 +24,10 @@ class SidebarLeftOverlay extends React.Component<Props> {
           <Pushable>
             <Sidebar as={Menu} width="thin" visible={true} icon="labeled" vertical={true} inverted={true}>
               {
-                this.props.menuItems.length > 0 && orderBy(this.props.menuItems, [`${rankName}`], ["desc"]).map(x => {
+                this.props.menuItems.length > 0 && orderBy(this.props.menuItems, [`${rankName}`], ["asc"]).map(x => {
                   return (
                     <Menu.Item key={x.name} name="database-explorer">
                       <Link to="/app">
-                        <Icon name="find" />
                         {x.name}
                       </Link>
                     </Menu.Item>

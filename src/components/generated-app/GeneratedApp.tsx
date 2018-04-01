@@ -20,7 +20,7 @@ class GeneratedApp extends React.Component {
               return (
                 <>
                   <Header>
-                    Application {response.data.app.cid} will look like this
+                    {response.data.app.description.name} will look like this
                     </Header>
                   <LeftLayout menuItems={response.data.app.menuItems}>
                     <Header>
