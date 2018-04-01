@@ -16,6 +16,7 @@ const GET_APP_LAYOUT_QUERY = gql`
       pages{
         name
         table{
+          id
           columns{
             dbSchema
             dbTable

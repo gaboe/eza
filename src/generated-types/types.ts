@@ -56,6 +56,7 @@ export interface GetAppLayoutQuery {
       name: string,
       table:  {
         __typename: "PageTableType",
+        id: string,
         columns:  Array< {
           __typename: "PageTableColumnTyp",
           dbSchema: string,
@@ -64,6 +65,25 @@ export interface GetAppLayoutQuery {
           dbDataType: string,
         } >,
       },
+    } >,
+  } | null,
+};
+
+export interface TableQueryQueryVariables {
+  tableID: string,
+};
+
+export interface TableQueryQuery {
+  tableQuery:  {
+    __typename: "TableQueryResponseType",
+    rows:  Array< {
+      __typename: "ResponseRowType",
+      key: string,
+      columns:  Array< {
+        __typename: "ResponseColumnType",
+        columnName: string,
+        value: string | null,
+      } >,
     } >,
   } | null,
 };

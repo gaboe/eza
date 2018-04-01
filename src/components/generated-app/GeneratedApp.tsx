@@ -11,9 +11,10 @@ class GeneratedApp extends React.Component {
     };
     return (
       <>
-        <AppLayoutQueryComponent query={GET_APP_LAYOUT_QUERY} variables={variables}>
+        <AppLayoutQueryComponent query={GET_APP_LAYOUT_QUERY} variables={variables} fetchPolicy="network-only">
           {
             response => {
+              console.log(response);
               if (response.loading || !response.data || !response.data.app) {
                 return null;
               }
