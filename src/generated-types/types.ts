@@ -51,6 +51,20 @@ export interface GetAppLayoutQuery {
       name: string,
       rank: number,
     } >,
+    pages:  Array< {
+      __typename: "PageType",
+      name: string,
+      table:  {
+        __typename: "PageTableType",
+        columns:  Array< {
+          __typename: "PageTableColumnTyp",
+          dbSchema: string,
+          dbTable: string,
+          dbColumn: string,
+          dbDataType: string,
+        } >,
+      },
+    } >,
   } | null,
 };
 

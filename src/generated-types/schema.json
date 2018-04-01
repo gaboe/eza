@@ -856,7 +856,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "table",
+              "name": "dbTable",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -872,7 +872,23 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "column",
+              "name": "dbColumn",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
+              "name": "dbDataType",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,

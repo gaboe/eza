@@ -3,7 +3,7 @@ import { GET_APP_LAYOUT_QUERY, AppLayoutQueryComponent } from "../../graphql/que
 import { GetAppLayoutQueryVariables } from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import { LeftLayout } from "./LeftLayout";
-
+import { Page } from "./Page";
 class GeneratedApp extends React.Component {
   render() {
     const variables: GetAppLayoutQueryVariables = {
@@ -23,9 +23,7 @@ class GeneratedApp extends React.Component {
                     {response.data.app.description.name} will look like this
                     </Header>
                   <LeftLayout menuItems={response.data.app.menuItems}>
-                    <Header>
-                      {response.data.app.cid}
-                    </Header>
+                    <Page page={response.data.app.pages[0]} />
                   </LeftLayout>
                 </>
               );

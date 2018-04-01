@@ -13,6 +13,17 @@ const GET_APP_LAYOUT_QUERY = gql`
         name
         rank
       }
+      pages{
+        name
+        table{
+          columns{
+            dbSchema
+            dbTable
+            dbColumn
+            dbDataType
+          }
+        }
+      }
     }
   }
 `;
