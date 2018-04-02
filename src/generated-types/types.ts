@@ -93,6 +93,7 @@ export interface AppPreviewQuery {
     pages:  Array< {
       __typename: "PageType",
       cid: string,
+      name: string,
       table:  {
         __typename: "PageTableType",
         id: string,

@@ -40,11 +40,21 @@ class AppPreview extends React.Component<Props, State> {
     return (
       <>
         <Wrapper>
+          <Header>
+            App preview
+           </Header>
+
           <AppPreviewComponent query={APP_PREVIEW_QUERY} variables={variables} fetchPolicy="network-only">
             {
               response => {
                 if (response.loading || !response.data) {
-                  return <div>Loading</div>;
+                  return (
+                    <>
+                      <LeftLayout loading={response.loading} urlPath={this.props.url} menuItems={[]}>
+                        <Header as="h4" content="You do not have any pages generated yet" />
+                      </LeftLayout>
+                    </>
+                  );
                 }
                 if (!response.data.appPreview || response.data.appPreview.pages.length === 0) {
                   return <Header
@@ -57,17 +67,17 @@ class AppPreview extends React.Component<Props, State> {
                   || response.data.appPreview.pages[0]
                   : response.data.appPreview.pages[0];
 
-                console.log(page);
                 return (
                   <>
-                    <Header>
-                      App preview
-                    </Header>
-
-                    <LeftLayout urlPath={this.props.url} menuItems={response.data.appPreview.menuItems}>
+                    <LeftLayout
+                      loading={response.loading}
+                      urlPath={this.props.url}
+                      menuItems={response.data.appPreview.menuItems}
+                    >
                       {
                         page && page.table &&
                         <PagePreview
+                          header={page.name}
                           columns={page.table.columns.map(x => {
                             const c: ColumnInputType = {
                               dataType: x.dbDataType,

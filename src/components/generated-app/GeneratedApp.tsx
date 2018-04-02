@@ -14,7 +14,6 @@ class GeneratedApp extends React.Component<Props> {
       cid: process.env.REACT_APP_CID || ""
     };
     let pageCid = this.props.match.params.cid;
-    console.log(pageCid);
     return (
       <>
         <AppLayoutQueryComponent query={GET_APP_LAYOUT_QUERY} variables={variables} fetchPolicy="network-only">
@@ -37,7 +36,7 @@ class GeneratedApp extends React.Component<Props> {
                     {response.data.app.description.name} will look like this
                     </Header>
 
-                  <LeftLayout urlPath={"/app"} menuItems={response.data.app.menuItems}>
+                  <LeftLayout loading={response.loading} urlPath={"/app"} menuItems={response.data.app.menuItems}>
                     {
                       page &&
                       <Page page={page} />

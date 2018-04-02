@@ -9,6 +9,7 @@ import { PageTable } from "./../generated-app/PageTable";
 
 type Props = {
   columns: ColumnInputType[],
+  header: string,
 };
 
 class PagePreview extends React.Component<Props> {
@@ -19,7 +20,7 @@ class PagePreview extends React.Component<Props> {
     };
     return (
       <>
-        <Header as="h3" content={"New page"} />
+        <Header as="h3" content={this.props.header} />
 
         <TableQueryPreviewComponent query={TABLE_QUERY_PREVIEW} variables={variables} >
           {

@@ -16,6 +16,7 @@ query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
     }
     pages {
       cid
+      name
       table {
         id
         columns {

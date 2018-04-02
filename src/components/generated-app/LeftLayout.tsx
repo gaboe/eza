@@ -12,20 +12,37 @@ min-height: calc(85vh);
 
 type Props = {
   menuItems: NonNullable<GetAppLayoutQuery["app"]>["menuItems"],
-  urlPath: string
+  urlPath: string,
+  loading: boolean
 };
 
-class SidebarLeftOverlay extends React.Component<Props> {
+type State = {
+  menuItems: NonNullable<GetAppLayoutQuery["app"]>["menuItems"],
+};
+
+class SidebarLeftOverlay extends React.Component<Props, State> {
+
+  static getDerivedStateFromProps(nextProps: Props, prevState: State): State | null {
+    if (nextProps.loading && nextProps.menuItems.length === 0) {
+      return null;
+    }
+    return { menuItems: nextProps.menuItems };
+  }
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { menuItems: [] };
+  }
+
   render() {
     const rankName: string = nameof<Props["menuItems"][0]>("rank");
-
     return (
       <>
         <Sidebar.Pushable as={Segment}>
           <Pushable>
             <Sidebar as={Menu} width="thin" visible={true} icon="labeled" vertical={true} inverted={true}>
               {
-                this.props.menuItems.length > 0 && orderBy(this.props.menuItems, [`${rankName}`], ["asc"]).map(x => {
+                this.state.menuItems.length > 0 && orderBy(this.state.menuItems, [`${rankName}`], ["asc"]).map(x => {
                   return (
                     <Menu.Item key={x.name} name="database-explorer">
                       <Link to={`${this.props.urlPath}/${x.pageCid}`}>
