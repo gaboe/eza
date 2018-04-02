@@ -18,7 +18,7 @@ class PageTable extends React.Component<Props> {
 
   render() {
     if (this.props.loading) {
-      return <div>Loading ...</div>;
+      return null;
     }
     if (!this.props.loading && !this.props.rows) {
       return <div>Nothing found</div>;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AppPreviewQueryVariables, ColumnInputType, AppPreviewQuery } from "../../generated-types/types";
+import { AppPreviewQueryVariables, ColumnInputType } from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import { LeftLayout } from "./../generated-app/LeftLayout";
 import { PagePreview } from "./PagePreview";
@@ -12,29 +12,16 @@ type Props = {
   pageCid?: string;
 };
 
-type State = {
-  columnsForQuery: ColumnInputType[];
-  pages?: NonNullable<AppPreviewQuery["appPreview"]>["pages"]
-};
-
 const Wrapper = styled.div`
 max-height: calc(80vh);
 `;
 
-class AppPreview extends React.Component<Props, State> {
-
-  static getDerivedStateFromProps(nextProps: Props, prevState: State): State | null {
-    // if (!prevState || prevState.columnsForQuery.length === 0 && nextProps.columns.length > 0) {
-    return { columnsForQuery: nextProps.columns };
-    // }
-
-    // return null;
-  }
+class AppPreview extends React.Component<Props> {
 
   render() {
     console.log(this.props.pageCid);
     const variables: AppPreviewQueryVariables = {
-      columns: this.state.columnsForQuery,
+      columns: this.props.columns,
       pageName: "new page"
     };
     return (
@@ -51,7 +38,7 @@ class AppPreview extends React.Component<Props, State> {
                   return (
                     <>
                       <LeftLayout loading={response.loading} urlPath={this.props.url} menuItems={[]}>
-                        <Header as="h4" content="You do not have any pages generated yet" />
+                        <Header as="h4" />
                       </LeftLayout>
                     </>
                   );
