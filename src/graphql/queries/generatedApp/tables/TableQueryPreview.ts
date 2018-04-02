@@ -1,4 +1,6 @@
 import gql from "graphql-tag";
+import { Query } from "react-apollo";
+import { TableQueryPreviewQuery, TableQueryPreviewQueryVariables } from "../../../../generated-types/types";
 
 const TABLE_QUERY_PREVIEW = gql`
 query TableQueryPreview($columns: [ColumnInputType!]!) {
@@ -14,4 +16,6 @@ query TableQueryPreview($columns: [ColumnInputType!]!) {
 }
 `;
 
-export { TABLE_QUERY_PREVIEW };
+class TableQueryPreviewComponent extends Query<TableQueryPreviewQuery, TableQueryPreviewQueryVariables> { }
+
+export { TABLE_QUERY_PREVIEW, TableQueryPreviewComponent };

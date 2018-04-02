@@ -1,64 +1,65 @@
-// import * as React from "react";
-// import { TableQueryQueryVariables, AppPreviewQuery, ColumnInputType } from "../../generated-types/types";
-// import { Header, Table } from "semantic-ui-react";
-// import { TableQuery, TABLE_QUERY } from "../../graphql/queries/generatedApp/tables/TableQuery";
+import * as React from "react";
+import { ColumnInputType, TableQueryPreviewQueryVariables } from "../../generated-types/types";
+import { Header, Table } from "semantic-ui-react";
+import {
+  TableQueryPreviewComponent, TABLE_QUERY_PREVIEW
+} from "../../graphql/queries/generatedApp/tables/TableQueryPreview";
 
-// type Props = {
-//   columns: ColumnInputType[],
-// };
+type Props = {
+  columns: ColumnInputType[],
+};
 
-// class PagePreview extends React.Component<Props> {
+class PagePreview extends React.Component<Props> {
 
-//   render() {
-//     const variables: Table = {
-//       tableID: this.props.page.table.id
-//     };
-//     return (
-//       <>
-//         <Header as="h3" content={"New page"} />
-//         <Table celled={true} selectable={true}>
-//           <Table.Header>
-//             <Table.Row>
-//               {
-//                 this.props.page.table.columns.map(x =>
-//                   <Table.HeaderCell key={x.dbColumn}>{x.dbColumn}</Table.HeaderCell>)
-//               }
-//             </Table.Row>
-//           </Table.Header>
-//           <TableQuery query={TABLE_QUERY} variables={variables} >
-//             {
-//               response => {
-//                 if (response.loading || !response.data) {
-//                   return null;
-//                 }
-//                 if (!response.data.tableQuery || !response.data.tableQuery.rows) {
-//                   return <div>Nothing found</div>;
-//                 }
-//                 return (
-//                   <>
-//                     <Table.Body>
-//                       {response.data.tableQuery.rows.map(row => {
-//                         return (
-//                           <Table.Row key={row.key}>
-//                             {
-//                               row.columns.map((c, index) => {
-//                                 return <Table.Cell key={`${row.key}-${index}`}>{c.value}</Table.Cell>;
-//                               })
-//                             }
-//                           </Table.Row>
-//                         );
-//                       })}
+  render() {
+    const variables: TableQueryPreviewQueryVariables = {
+      columns: this.props.columns
+    };
+    return (
+      <>
+        <Header as="h3" content={"New page"} />
+        <Table celled={true} selectable={true}>
+          <Table.Header>
+            <Table.Row>
+              {
+                this.props.columns.map(x =>
+                  <Table.HeaderCell key={x.name}>{x.name}</Table.HeaderCell>)
+              }
+            </Table.Row>
+          </Table.Header>
+          <TableQueryPreviewComponent query={TABLE_QUERY_PREVIEW} variables={variables} >
+            {
+              response => {
+                if (response.loading || !response.data) {
+                  return <div>Loading</div>;
+                }
+                if (!response.data.tableQueryPreview || !response.data.tableQueryPreview.rows) {
+                  return <div>Nothing found</div>;
+                }
+                return (
+                  <>
+                    <Table.Body>
+                      {response.data.tableQueryPreview.rows.map(row => {
+                        return (
+                          <Table.Row key={row.key}>
+                            {
+                              row.columns.map((c, index) => {
+                                return <Table.Cell key={`${row.key}-${index}`}>{c.value}</Table.Cell>;
+                              })
+                            }
+                          </Table.Row>
+                        );
+                      })}
 
-//                     </Table.Body>
-//                   </>);
-//               }
-//             }
-//           </TableQuery >
+                    </Table.Body>
+                  </>);
+              }
+            }
+          </TableQueryPreviewComponent >
+        </Table>
+      </>
+    );
+  }
+}
 
-//         </Table>
-//       </>
-//     );
-//   }
-// }
-
-// export { PagePreview };
+export { PagePreview };

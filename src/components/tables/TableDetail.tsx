@@ -32,14 +32,19 @@ class TableDetail extends React.Component<Props, State> {
   }
 
   checkColumn = (c: Column) => {
-    this.setState({ showPreview: false });
     if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
-      this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) });
+      this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) }, this.checkVisibility);
     } else {
       const column: ColumnInputType = {
         name: c.name, dataType: c.dataType, schemaName: c.schemaName, tableName: c.tableName
       };
-      this.setState({ checkedColumns: append(column, this.state.checkedColumns) });
+      this.setState({ checkedColumns: append(column, this.state.checkedColumns) }, this.checkVisibility);
+    }
+  }
+
+  checkVisibility = () => {
+    if (this.state.checkedColumns.length === 0) {
+      this.setState({ showPreview: false });
     }
   }
 
