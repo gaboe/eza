@@ -1,7 +1,8 @@
 import * as React from "react";
 import { GetAppLayoutQuery, TableQueryQueryVariables } from "../../generated-types/types";
-import { Header, Table } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import { TableQuery, TABLE_QUERY } from "../../graphql/queries/generatedApp/tables/TableQuery";
+import { PageTable, Row, ColumnData } from "./PageTable";
 
 type Props = {
   page: NonNullable<GetAppLayoutQuery["app"]>["pages"][0]
@@ -16,46 +17,42 @@ class Page extends React.Component<Props> {
     return (
       <>
         <Header as="h3" content={this.props.page.name} />
-        <Table celled={true} selectable={true}>
-          <Table.Header>
-            <Table.Row>
-              {
-                this.props.page.table.columns.map(x =>
-                  <Table.HeaderCell key={x.dbColumn}>{x.dbColumn}</Table.HeaderCell>)
-              }
-            </Table.Row>
-          </Table.Header>
-          <TableQuery query={TABLE_QUERY} variables={variables} >
-            {
-              response => {
-                if (response.loading || !response.data) {
-                  return null;
-                }
-                if (!response.data.tableQuery || !response.data.tableQuery.rows) {
-                  return <div>Nothing found</div>;
-                }
+
+        <TableQuery query={TABLE_QUERY} variables={variables} >
+          {
+            response => {
+
+              if (!response.loading && response.data && response.data.tableQuery && response.data.tableQuery.rows) {
+                const rows = response.data.tableQuery.rows.map(x => {
+                  const row: Row = {
+                    key: x.key,
+                    columns: x.columns.map(c => {
+                      const col: ColumnData = {
+                        value: c.value,
+                        columnName: c.columnName
+                      };
+                      return col;
+                    })
+                  };
+                  return row;
+                });
                 return (
-                  <>
-                    <Table.Body>
-                      {response.data.tableQuery.rows.map(row => {
-                        return (
-                          <Table.Row key={row.key}>
-                            {
-                              row.columns.map((c, index) => {
-                                return <Table.Cell key={`${row.key}-${index}`}>{c.value}</Table.Cell>;
-                              })
-                            }
-                          </Table.Row>
-                        );
-                      })}
-
-                    </Table.Body>
-                  </>);
+                  <PageTable
+                    columns={this.props.page.table.columns.map(x => x.dbColumn)}
+                    loading={response.loading}
+                    rows={rows}
+                  />
+                );
               }
+              return (
+                <PageTable
+                  columns={this.props.page.table.columns.map(x => x.dbColumn)}
+                  loading={response.loading}
+                />
+              );
             }
-          </TableQuery >
-
-        </Table>
+          }
+        </TableQuery >
       </>
     );
   }

@@ -52,7 +52,7 @@ class AppPreview extends React.Component<Props, State> {
                 return (
                   <>
                     <Header>
-                      {response.data.appPreview.description.name} will look like this
+                      App preview
                     </Header>
 
                     <LeftLayout menuItems={response.data.appPreview.menuItems}>
