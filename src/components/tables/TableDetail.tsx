@@ -28,6 +28,7 @@ class TableDetail extends React.Component<Props, State> {
     };
   }
   checkColumn = (c: Column) => {
+    console.log(c);
     if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
       this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) }, this.checkVisibility);
     } else {
@@ -92,7 +93,7 @@ class TableDetail extends React.Component<Props, State> {
                         }
                       </List>
 
-                      <Referenced referenced={response.data.table.referenced} />
+                      <Referenced checkColumn={this.checkColumn} referenced={response.data.table.referenced} />
                       <Referencing referencing={response.data.table.referencing} />
 
                       <AddPageMutationComponent mutation={ADD_PAGE_MUTATION}>
@@ -150,4 +151,4 @@ class TableDetail extends React.Component<Props, State> {
   }
 }
 
-export { TableDetail };
+export { TableDetail, Column };
