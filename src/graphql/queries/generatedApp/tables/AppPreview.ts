@@ -15,6 +15,7 @@ query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
       rank
     }
     pages {
+      cid
       table {
         id
         columns {

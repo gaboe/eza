@@ -11,7 +11,7 @@ import { Referencing } from "./Referencing";
 import { append } from "ramda";
 import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutations/apps/AddPage";
 import { AppPreview } from "./AppPreview";
-type Props = RouteComponentProps<{ name: string }>;
+type Props = RouteComponentProps<{ name: string, cid?: string }>;
 
 type Column = NonNullable<TableDetailQuery["table"]>["columns"][0];
 
@@ -47,6 +47,8 @@ class TableDetail extends React.Component<Props, State> {
   }
 
   render() {
+    const pageCid = this.props.match.params.cid;
+    const url = `/table/${this.props.match.params.name}`;
     const variables: TableDetailQueryVariables = {
       tableName: this.props.match.params.name
     };
@@ -132,7 +134,7 @@ class TableDetail extends React.Component<Props, State> {
 
                     {this.state.showPreview &&
                       <Col sm={6} lg={9}>
-                        <AppPreview columns={this.state.checkedColumns} />
+                        <AppPreview pageCid={pageCid} url={url} columns={this.state.checkedColumns} />
                       </Col>
                     }
                   </Row>

@@ -12,6 +12,7 @@ min-height: calc(85vh);
 
 type Props = {
   menuItems: NonNullable<GetAppLayoutQuery["app"]>["menuItems"],
+  urlPath: string
 };
 
 class SidebarLeftOverlay extends React.Component<Props> {
@@ -27,7 +28,7 @@ class SidebarLeftOverlay extends React.Component<Props> {
                 this.props.menuItems.length > 0 && orderBy(this.props.menuItems, [`${rankName}`], ["asc"]).map(x => {
                   return (
                     <Menu.Item key={x.name} name="database-explorer">
-                      <Link to={`/app/${x.pageCid}`}>
+                      <Link to={`${this.props.urlPath}/${x.pageCid}`}>
                         {x.name}
                       </Link>
                     </Menu.Item>

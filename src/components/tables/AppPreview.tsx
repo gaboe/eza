@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AppPreviewQueryVariables, ColumnInputType } from "../../generated-types/types";
+import { AppPreviewQueryVariables, ColumnInputType, AppPreviewQuery } from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import { LeftLayout } from "./../generated-app/LeftLayout";
 import { PagePreview } from "./PagePreview";
@@ -7,11 +7,14 @@ import { AppPreviewComponent, APP_PREVIEW_QUERY } from "../../graphql/queries/ge
 import styled from "styled-components";
 
 type Props = {
-  columns: ColumnInputType[],
+  columns: ColumnInputType[];
+  url: string;
+  pageCid?: string;
 };
 
 type State = {
-  columnsForQuery: ColumnInputType[],
+  columnsForQuery: ColumnInputType[];
+  pages?: NonNullable<AppPreviewQuery["appPreview"]>["pages"]
 };
 
 const Wrapper = styled.div`
@@ -21,13 +24,15 @@ max-height: calc(80vh);
 class AppPreview extends React.Component<Props, State> {
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State): State | null {
-    if (!prevState || prevState.columnsForQuery.length === 0 && nextProps.columns.length > 0) {
-      return { columnsForQuery: nextProps.columns };
-    }
-    return null;
+    // if (!prevState || prevState.columnsForQuery.length === 0 && nextProps.columns.length > 0) {
+    return { columnsForQuery: nextProps.columns };
+    // }
+
+    // return null;
   }
 
   render() {
+    console.log(this.props.pageCid);
     const variables: AppPreviewQueryVariables = {
       columns: this.state.columnsForQuery,
       pageName: "new page"
@@ -47,18 +52,32 @@ class AppPreview extends React.Component<Props, State> {
                   />;
                 }
 
-                const page = response.data.appPreview.pages[0];
+                const page = this.props.pageCid
+                  ? response.data.appPreview.pages.find(x => x.cid === this.props.pageCid)
+                  || response.data.appPreview.pages[0]
+                  : response.data.appPreview.pages[0];
 
+                console.log(page);
                 return (
                   <>
                     <Header>
                       App preview
                     </Header>
 
-                    <LeftLayout menuItems={response.data.appPreview.menuItems}>
+                    <LeftLayout urlPath={this.props.url} menuItems={response.data.appPreview.menuItems}>
                       {
-                        page &&
-                        <PagePreview columns={this.props.columns} />
+                        page && page.table &&
+                        <PagePreview
+                          columns={page.table.columns.map(x => {
+                            const c: ColumnInputType = {
+                              dataType: x.dbDataType,
+                              name: x.dbColumn,
+                              schemaName: x.dbSchema,
+                              tableName: x.dbTable
+                            };
+                            return c;
+                          })}
+                        />
                       }
                       {
                         !page &&

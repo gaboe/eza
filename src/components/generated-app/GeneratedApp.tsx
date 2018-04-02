@@ -37,7 +37,7 @@ class GeneratedApp extends React.Component<Props> {
                     {response.data.app.description.name} will look like this
                     </Header>
 
-                  <LeftLayout menuItems={response.data.app.menuItems}>
+                  <LeftLayout urlPath={"/app"} menuItems={response.data.app.menuItems}>
                     {
                       page &&
                       <Page page={page} />
