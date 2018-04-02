@@ -27,10 +27,6 @@ class TableDetail extends React.Component<Props, State> {
       showPreview: false
     };
   }
-  saveView = () => {
-    console.log(this.state.checkedColumns);
-  }
-
   checkColumn = (c: Column) => {
     if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
       this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) }, this.checkVisibility);
@@ -45,6 +41,8 @@ class TableDetail extends React.Component<Props, State> {
   checkVisibility = () => {
     if (this.state.checkedColumns.length === 0) {
       this.setState({ showPreview: false });
+    } else {
+      this.setState({ showPreview: true });
     }
   }
 
@@ -122,14 +120,6 @@ class TableDetail extends React.Component<Props, State> {
 
                                         }}
                                     />
-                                  </Col>
-                                  <Col xs={6}>
-                                    {this.state.checkedColumns.length > 0 && !this.state.showPreview &&
-                                      <Button
-                                        content="Show preview"
-                                        onClick={() => this.setState({ showPreview: true })}
-                                      />
-                                    }
                                   </Col>
 
                                 </Row>

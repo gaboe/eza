@@ -10,14 +10,26 @@ type Props = {
   columns: ColumnInputType[],
 };
 
+type State = {
+  columnsForQuery: ColumnInputType[],
+};
+
 const Wrapper = styled.div`
 max-height: calc(80vh);
 `;
 
-class AppPreview extends React.Component<Props> {
+class AppPreview extends React.Component<Props, State> {
+
+  static getDerivedStateFromProps(nextProps: Props, prevState: State): State | null {
+    if (!prevState || prevState.columnsForQuery.length === 0 && nextProps.columns.length > 0) {
+      return { columnsForQuery: nextProps.columns };
+    }
+    return null;
+  }
+
   render() {
     const variables: AppPreviewQueryVariables = {
-      columns: [],
+      columns: this.state.columnsForQuery,
       pageName: "new page"
     };
     return (
