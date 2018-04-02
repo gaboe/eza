@@ -10,18 +10,21 @@ import { Referenced } from "./Referenced";
 import { Referencing } from "./Referencing";
 import { append } from "ramda";
 import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutations/apps/AddPage";
+import { AppPreview } from "./AppPreview";
 type Props = RouteComponentProps<{ name: string }>;
 
 type Column = NonNullable<TableDetailQuery["table"]>["columns"][0];
 
 type State = {
-  checkedColumns: ColumnInputType[]
+  checkedColumns: ColumnInputType[],
+  showPreview: boolean
 };
 class TableDetail extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      checkedColumns: []
+      checkedColumns: [],
+      showPreview: false
     };
   }
   saveView = () => {
@@ -29,6 +32,7 @@ class TableDetail extends React.Component<Props, State> {
   }
 
   checkColumn = (c: Column) => {
+    this.setState({ showPreview: false });
     if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
       this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) });
     } else {
@@ -96,27 +100,46 @@ class TableDetail extends React.Component<Props, State> {
 
                             return (
                               <>
-                                <Button
-                                  content="Save as view"
-                                  onClick={
-                                    () => {
-                                      if (!response.loading && response.data && response.data.table) {
-                                        const mutationVariables: AddPageMutationVariables = {
-                                          columns: this.state.checkedColumns,
-                                          pageName: response.data.table.name
-                                        };
-                                        console.log(mutationVariables);
-                                        mutation({ variables: mutationVariables });
-                                      }
+                                <Row>
+                                  <Col xs={6}>
+                                    <Button
+                                      content="Save as view"
+                                      onClick={
+                                        () => {
+                                          if (!response.loading && response.data && response.data.table) {
+                                            const mutationVariables: AddPageMutationVariables = {
+                                              columns: this.state.checkedColumns,
+                                              pageName: response.data.table.name
+                                            };
+                                            console.log(mutationVariables);
+                                            mutation({ variables: mutationVariables });
+                                          }
 
-                                    }}
-                                />
+                                        }}
+                                    />
+                                  </Col>
+                                  <Col xs={6}>
+                                    {this.state.checkedColumns.length > 0 && !this.state.showPreview &&
+                                      <Button
+                                        content="Show preview"
+                                        onClick={() => this.setState({ showPreview: true })}
+                                      />
+                                    }
+                                  </Col>
+
+                                </Row>
                               </>
                             );
                           }
                         }
                       </AddPageMutationComponent>
                     </Col>
+
+                    {this.state.showPreview &&
+                      <Col sm={6} lg={9}>
+                        <AppPreview columns={this.state.checkedColumns} />
+                      </Col>
+                    }
                   </Row>
 
                 </>

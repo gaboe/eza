@@ -71,12 +71,67 @@ export interface GetAppLayoutQuery {
   } | null,
 };
 
+export interface AppPreviewQueryVariables {
+  columns: Array< ColumnInputType >,
+  pageName: string,
+};
+
+export interface AppPreviewQuery {
+  appPreview:  {
+    __typename: "AppType",
+    cid: string,
+    description:  {
+      __typename: "AppDescriptionType",
+      name: string,
+    },
+    menuItems:  Array< {
+      __typename: "MenuItemType",
+      pageCid: string,
+      name: string,
+      rank: number,
+    } >,
+    pages:  Array< {
+      __typename: "PageType",
+      table:  {
+        __typename: "PageTableType",
+        id: string,
+        columns:  Array< {
+          __typename: "PageTableColumnTyp",
+          dbSchema: string,
+          dbTable: string,
+          dbColumn: string,
+          dbDataType: string,
+        } >,
+      },
+    } >,
+  } | null,
+};
+
 export interface TableQueryQueryVariables {
   tableID: string,
 };
 
 export interface TableQueryQuery {
   tableQuery:  {
+    __typename: "TableQueryResponseType",
+    rows:  Array< {
+      __typename: "ResponseRowType",
+      key: string,
+      columns:  Array< {
+        __typename: "ResponseColumnType",
+        columnName: string,
+        value: string | null,
+      } >,
+    } >,
+  } | null,
+};
+
+export interface TableQueryPreviewQueryVariables {
+  columns: Array< ColumnInputType >,
+};
+
+export interface TableQueryPreviewQuery {
+  tableQueryPreview:  {
     __typename: "TableQueryResponseType",
     rows:  Array< {
       __typename: "ResponseRowType",
