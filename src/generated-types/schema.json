@@ -207,7 +207,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "ColumnType",
+                      "name": "DbColumnType",
                       "ofType": null
                     }
                   }
@@ -273,22 +273,14 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "columns",
+                  "name": "table",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "LIST",
-                      "name": null,
-                      "ofType": {
-                        "kind": "NON_NULL",
-                        "name": null,
-                        "ofType": {
-                          "kind": "INPUT_OBJECT",
-                          "name": "ColumnInputType",
-                          "ofType": null
-                        }
-                      }
+                      "kind": "INPUT_OBJECT",
+                      "name": "TableInputType",
+                      "ofType": null
                     }
                   }
                 },
@@ -322,22 +314,14 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "columns",
+                  "name": "table",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "LIST",
-                      "name": null,
-                      "ofType": {
-                        "kind": "NON_NULL",
-                        "name": null,
-                        "ofType": {
-                          "kind": "INPUT_OBJECT",
-                          "name": "ColumnInputType",
-                          "ofType": null
-                        }
-                      }
+                      "kind": "INPUT_OBJECT",
+                      "name": "TableInputType",
+                      "ofType": null
                     }
                   }
                 }
@@ -449,7 +433,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "ColumnType",
+                      "name": "DbColumnType",
                       "ofType": null
                     }
                   }
@@ -599,7 +583,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "ColumnType",
+          "name": "DbColumnType",
           "possibleTypes": null
         },
         {
@@ -653,7 +637,39 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
+              "name": "referencedSchemaName",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
               "name": "referencedColumnName",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
+              "name": "referencingSchemaName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -927,7 +943,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PageTableType",
+                  "name": "TableType",
                   "ofType": null
                 }
               }
@@ -976,7 +992,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "PageTableColumnType",
+                      "name": "ColumnType",
                       "ofType": null
                     }
                   }
@@ -987,7 +1003,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "PageTableType",
+          "name": "TableType",
           "possibleTypes": null
         },
         {
@@ -999,7 +1015,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "dbColumn",
+              "name": "id",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1015,7 +1031,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "dbDataType",
+              "name": "columnName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1031,50 +1047,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "table",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "PageTableColumnTableType",
-                  "ofType": null
-                }
-              }
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "kind": "OBJECT",
-          "name": "PageTableColumnType",
-          "possibleTypes": null
-        },
-        {
-          "description": null,
-          "enumValues": null,
-          "fields": [
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": null,
-              "isDeprecated": false,
-              "name": "isPrimary",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": null,
-              "isDeprecated": false,
-              "name": "dbSchemaName",
+              "name": "tableName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1090,7 +1063,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "dbTableName",
+              "name": "schemaName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1105,17 +1078,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "PageTableColumnTableType",
-          "possibleTypes": null
-        },
-        {
-          "description": "The `Boolean` scalar type represents `true` or `false`.",
-          "enumValues": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "kind": "SCALAR",
-          "name": "Boolean",
+          "name": "ColumnType",
           "possibleTypes": null
         },
         {
@@ -1244,28 +1207,14 @@
           "possibleTypes": null
         },
         {
-          "description": null,
+          "description": "Represents UI table, properties are from main table",
           "enumValues": null,
           "fields": null,
           "inputFields": [
             {
               "defaultValue": null,
               "description": null,
-              "name": "table",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "TableInputType",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "defaultValue": null,
-              "description": null,
-              "name": "name",
+              "name": "schemaName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1279,7 +1228,7 @@
             {
               "defaultValue": null,
               "description": null,
-              "name": "dataType",
+              "name": "tableName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1287,13 +1236,35 @@
                   "kind": "SCALAR",
                   "name": "String",
                   "ofType": null
+                }
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "columns",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "ColumnInputType",
+                      "ofType": null
+                    }
+                  }
                 }
               }
             }
           ],
           "interfaces": null,
           "kind": "INPUT_OBJECT",
-          "name": "ColumnInputType",
+          "name": "TableInputType",
           "possibleTypes": null
         },
         {
@@ -1331,8 +1302,22 @@
             },
             {
               "defaultValue": null,
-              "description": "Indicates if this db table is main one in view",
-              "name": "isPrimary",
+              "description": null,
+              "name": "columnName",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "isFromPrimaryTable",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -1342,11 +1327,70 @@
                   "ofType": null
                 }
               }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "reference",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ReferenceInputType",
+                "ofType": null
+              }
             }
           ],
           "interfaces": null,
           "kind": "INPUT_OBJECT",
-          "name": "TableInputType",
+          "name": "ColumnInputType",
+          "possibleTypes": null
+        },
+        {
+          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "enumValues": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "possibleTypes": null
+        },
+        {
+          "description": null,
+          "enumValues": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "primaryKey",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "type",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "ReferenceInputType",
           "possibleTypes": null
         },
         {

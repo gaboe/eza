@@ -20,13 +20,7 @@ query GetAppLayout($cid: String!) {
       table {
         id
         columns {
-          dbColumn
-          dbDataType
-          table {
-            isPrimary
-            dbSchemaName
-            dbTableName
-          }
+          columnName
         }
       }
     }

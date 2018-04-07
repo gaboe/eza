@@ -3,8 +3,8 @@ import { Query } from "react-apollo";
 import { AppPreviewQuery, AppPreviewQueryVariables } from "../../../../generated-types/types";
 
 const APP_PREVIEW_QUERY = gql`
-query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
-  appPreview(columns: $columns, pageName: $pageName) {
+query AppPreview($table: TableInputType!, $pageName: String!) {
+  appPreview(table: $table, pageName: $pageName) {
     cid
     description{
       name
@@ -14,19 +14,16 @@ query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
       name
       rank
     }
-    pages {
+    pages{
       cid
       name
-      table {
+      table{
         id
-        columns {
-          dbColumn
-          dbDataType
-          table{
-            isPrimary
-            dbSchemaName
-            dbTableName
-          }
+        columns{
+          columnName
+          tableName
+          schemaName
+          id
         }
       }
     }

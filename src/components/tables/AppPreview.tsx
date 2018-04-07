@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AppPreviewQueryVariables, ColumnInputType } from "../../generated-types/types";
+import { AppPreviewQueryVariables, TableInputType } from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import { LeftLayout } from "./../generated-app/LeftLayout";
 import { PagePreview } from "./PagePreview";
@@ -7,9 +7,9 @@ import { AppPreviewComponent, APP_PREVIEW_QUERY } from "../../graphql/queries/ge
 import styled from "styled-components";
 
 type Props = {
-  columns: ColumnInputType[];
   url: string;
   pageCid?: string;
+  table: TableInputType
 };
 
 const Wrapper = styled.div`
@@ -20,7 +20,7 @@ class AppPreview extends React.Component<Props> {
 
   render() {
     const variables: AppPreviewQueryVariables = {
-      columns: this.props.columns,
+      table: this.props.table,
       pageName: "new page"
     };
     return (
@@ -52,7 +52,6 @@ class AppPreview extends React.Component<Props> {
                   ? response.data.appPreview.pages.find(x => x.cid === this.props.pageCid)
                   || response.data.appPreview.pages[0]
                   : response.data.appPreview.pages[0];
-                console.log(response);
                 return (
                   <>
                     <LeftLayout
@@ -64,18 +63,7 @@ class AppPreview extends React.Component<Props> {
                         page && page.table &&
                         <PagePreview
                           header={page.name}
-                          columns={this.props.columns.map(x => {
-                            const c: ColumnInputType = {
-                              dataType: x.dataType,
-                              name: x.name,
-                              table: {
-                                isPrimary: x.table.isPrimary,
-                                schemaName: x.table.schemaName,
-                                tableName: x.table.tableName
-                              }
-                            };
-                            return c;
-                          })}
+                          table={this.props.table}
                         />
                       }
                       {

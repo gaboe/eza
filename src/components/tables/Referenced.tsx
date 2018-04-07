@@ -1,13 +1,17 @@
 import * as React from "react";
 import { List, Header, Button, Checkbox } from "semantic-ui-react";
-import { TableDetailQuery, GetColumnsByTableNameQueryVariables } from "../../generated-types/types";
+import {
+  TableDetailQuery,
+  GetColumnsByTableNameQueryVariables,
+  ReferenceInputType,
+  ColumnInputType
+} from "../../generated-types/types";
 import { find } from "lodash";
 import { ColumsByTableQueryComponent, COLUMNS_BY_TABLE_QUERY } from "../../graphql/queries/columns/ColumnsByTableQuery";
 import { append } from "ramda";
-import { Column } from "./TableDetail";
 type Props = {
   referenced: NonNullable<TableDetailQuery["table"]>["referenced"];
-  checkColumn: (column: Column) => void;
+  checkColumn: (column: ColumnInputType) => void;
 };
 
 type State = {
@@ -31,7 +35,16 @@ class Referenced extends React.Component<Props, State> {
                 return (
                   response.data.columns.map(x => {
                     return (
-                      <List.Item key={x.name} onClick={() => this.props.checkColumn(x)} >
+                      <List.Item
+                        key={x.name}
+                        onClick={() => this.props.checkColumn(
+                          {
+                            columnName: x.name,
+                            isFromPrimaryTable: false,
+                            tableName: x.tableName,
+                            schemaName: x.schemaName
+                          })}
+                      >
                         <Checkbox />
                         {` [${x.dataType}]: ${x.name}`}
                       </List.Item>
@@ -50,10 +63,23 @@ class Referenced extends React.Component<Props, State> {
     super(props);
     this.state = { displayedTables: [] };
   }
-  toggleTableColumns = (tableName: string) => {
+  toggleTableColumns = (schema: string, tableName: string, column: string, primaryKey: string) => {
     find(this.state.displayedTables, x => x === tableName)
       ? this.setState({ displayedTables: this.state.displayedTables.filter(x => x !== tableName) })
       : this.setState({ displayedTables: append(tableName, this.state.displayedTables) });
+    const reference: ReferenceInputType = {
+      primaryKey: primaryKey,
+      type: "JOIN"
+    };
+
+    this.props.checkColumn(
+      {
+        reference: reference,
+        tableName: tableName,
+        isFromPrimaryTable: false,
+        columnName: column,
+        schemaName: schema
+      });
   }
 
   render() {
@@ -83,7 +109,13 @@ class Referenced extends React.Component<Props, State> {
                   <Button
                     size="mini"
                     content="Show columns"
-                    onClick={() => this.toggleTableColumns(x.referencedTableName)}
+                    onClick={() =>
+                      this.toggleTableColumns(
+                        x.referencedSchemaName,
+                        x.referencedTableName,
+                        x.referencedColumnName,
+                        x.referencingColumnName)
+                    }
                   />
                 </List.Item>
               );

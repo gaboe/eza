@@ -2,16 +2,22 @@
 //  This file was automatically generated and should not be edited.
 
 export interface ColumnInputType {
-  table: TableInputType,
-  name: string,
-  dataType: string,
+  schemaName: string,
+  tableName: string,
+  columnName: string,
+  isFromPrimaryTable: boolean,
+  reference?: ReferenceInputType | null,
+};
+
+export interface ReferenceInputType {
+  primaryKey: string,
+  type: string,
 };
 
 export interface TableInputType {
   schemaName: string,
   tableName: string,
-  // Indicates if this db table is main one in view
-  isPrimary: boolean,
+  columns: Array< ColumnInputType >,
 };
 
 export interface AddPageMutationVariables {
@@ -32,7 +38,7 @@ export interface GetColumnsByTableNameQueryVariables {
 
 export interface GetColumnsByTableNameQuery {
   columns:  Array< {
-    __typename: "ColumnType",
+    __typename: "DbColumnType",
     name: string,
     schemaName: string,
     tableName: string,
@@ -63,18 +69,11 @@ export interface GetAppLayoutQuery {
       cid: string,
       name: string,
       table:  {
-        __typename: "PageTableType",
+        __typename: "TableType",
         id: string,
         columns:  Array< {
-          __typename: "PageTableColumnType",
-          dbColumn: string,
-          dbDataType: string,
-          table:  {
-            __typename: "PageTableColumnTableType",
-            isPrimary: boolean,
-            dbSchemaName: string,
-            dbTableName: string,
-          },
+          __typename: "ColumnType",
+          columnName: string,
         } >,
       },
     } >,
@@ -82,7 +81,7 @@ export interface GetAppLayoutQuery {
 };
 
 export interface AppPreviewQueryVariables {
-  columns: Array< ColumnInputType >,
+  table: TableInputType,
   pageName: string,
 };
 
@@ -105,18 +104,14 @@ export interface AppPreviewQuery {
       cid: string,
       name: string,
       table:  {
-        __typename: "PageTableType",
+        __typename: "TableType",
         id: string,
         columns:  Array< {
-          __typename: "PageTableColumnType",
-          dbColumn: string,
-          dbDataType: string,
-          table:  {
-            __typename: "PageTableColumnTableType",
-            isPrimary: boolean,
-            dbSchemaName: string,
-            dbTableName: string,
-          },
+          __typename: "ColumnType",
+          columnName: string,
+          tableName: string,
+          schemaName: string,
+          id: string,
         } >,
       },
     } >,
@@ -143,7 +138,7 @@ export interface TableQueryQuery {
 };
 
 export interface TableQueryPreviewQueryVariables {
-  columns: Array< ColumnInputType >,
+  table: TableInputType,
 };
 
 export interface TableQueryPreviewQuery {
@@ -151,12 +146,12 @@ export interface TableQueryPreviewQuery {
     __typename: "TableQueryResponseType",
     rows:  Array< {
       __typename: "ResponseRowType",
-      key: string,
       columns:  Array< {
         __typename: "ResponseColumnType",
         columnName: string,
         value: string | null,
       } >,
+      key: string,
     } >,
   } | null,
 };
@@ -178,7 +173,7 @@ export interface TableDetailQuery {
     name: string,
     schemaName: string,
     columns:  Array< {
-      __typename: "ColumnType",
+      __typename: "DbColumnType",
       schemaName: string,
       tableName: string,
       name: string,
@@ -186,15 +181,19 @@ export interface TableDetailQuery {
     } >,
     referencing:  Array< {
       __typename: "DbReferenceConstrainType",
+      referencedSchemaName: string,
       referencedTableName: string,
       referencedColumnName: string,
+      referencingSchemaName: string,
       referencingTableName: string,
       referencingColumnName: string,
     } >,
     referenced:  Array< {
       __typename: "DbReferenceConstrainType",
+      referencedSchemaName: string,
       referencedTableName: string,
       referencedColumnName: string,
+      referencingSchemaName: string,
       referencingTableName: string,
       referencingColumnName: string,
     } >,

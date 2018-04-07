@@ -27,18 +27,44 @@ class TableDetail extends React.Component<Props, State> {
       showPreview: false
     };
   }
-  checkColumn = (c: Column) => {
-    if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
-      this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) }, this.checkVisibility);
-    } else {
-      const isPrimary = this.props.match.params.name === c.tableName;
+
+  checkForeignColumn = (c: ColumnInputType) => {
+    this.checkColumn(c.schemaName, c.tableName, c.columnName, () => c);
+  }
+
+  checkColumnFromPrimaryTable = (c: Column, isFromPrimaryTable: boolean) => {
+    this.checkColumn(c.schemaName, c.tableName, c.name, () => {
       const column: ColumnInputType = {
-        name: c.name,
-        dataType: c.dataType,
-        table: { isPrimary: isPrimary, schemaName: c.schemaName, tableName: c.tableName }
+        columnName: c.name,
+        schemaName: c.schemaName,
+        tableName: c.tableName,
+        isFromPrimaryTable: isFromPrimaryTable
       };
-      this.setState({ checkedColumns: append(column, this.state.checkedColumns) }, this.checkVisibility);
+      return column;
+    });
+  }
+
+  checkColumn = (
+    schemaName: string, tableName: string, columnName: string,
+    getColumnInputType: () => ColumnInputType) => {
+    console.log("cols", this.getColumns(schemaName, tableName, columnName));
+    if (this.getColumns(schemaName, tableName, columnName)
+      .length > 0) {
+      this.setState(
+        {
+          checkedColumns:
+            this.state.checkedColumns
+              .filter(x => !(x.columnName === columnName && x.tableName === tableName && x.schemaName === schemaName))
+        },
+        this.checkVisibility);
+    } else {
+      this.setState({ checkedColumns: append(getColumnInputType(), this.state.checkedColumns) }, this.checkVisibility);
     }
+  }
+
+  getColumns = (schemaName: string, tableName: string, columnName: string) => {
+    return this.state.checkedColumns
+      .filter(x => x.columnName === columnName && x.schemaName === schemaName && x.tableName === tableName);
   }
 
   checkVisibility = () => {
@@ -87,7 +113,7 @@ class TableDetail extends React.Component<Props, State> {
                           response.data.table.columns.map(x => {
                             return (
                               <List.Item key={x.name} >
-                                <Checkbox onClick={() => this.checkColumn(x)} />
+                                <Checkbox onClick={() => this.checkColumnFromPrimaryTable(x, true)} />
                                 {` [${x.dataType}]: ${x.name}`}
                               </List.Item>
                             );
@@ -95,7 +121,10 @@ class TableDetail extends React.Component<Props, State> {
                         }
                       </List>
 
-                      <Referenced checkColumn={this.checkColumn} referenced={response.data.table.referenced} />
+                      <Referenced
+                        checkColumn={this.checkForeignColumn}
+                        referenced={response.data.table.referenced}
+                      />
                       <Referencing referencing={response.data.table.referencing} />
 
                       <AddPageMutationComponent mutation={ADD_PAGE_MUTATION}>
@@ -119,7 +148,6 @@ class TableDetail extends React.Component<Props, State> {
                                               columns: this.state.checkedColumns,
                                               pageName: response.data.table.name
                                             };
-                                            console.log(mutationVariables);
                                             mutation({ variables: mutationVariables });
                                           }
 
@@ -137,7 +165,15 @@ class TableDetail extends React.Component<Props, State> {
 
                     {this.state.showPreview &&
                       <Col sm={6} lg={9}>
-                        <AppPreview pageCid={pageCid} url={url} columns={this.state.checkedColumns} />
+                        <AppPreview
+                          pageCid={pageCid}
+                          url={url}
+                          table={{
+                            tableName: response.data.table.name,
+                            schemaName: response.data.table.schemaName,
+                            columns: this.state.checkedColumns
+                          }}
+                        />
                       </Col>
                     }
                   </Row>

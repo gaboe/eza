@@ -38,7 +38,7 @@ class Page extends React.Component<Props> {
                 });
                 return (
                   <PageTable
-                    columns={this.props.page.table.columns.map(x => x.dbColumn)}
+                    columns={this.props.page.table.columns.map(x => x.columnName)}
                     loading={response.loading}
                     rows={rows}
                   />
@@ -46,7 +46,7 @@ class Page extends React.Component<Props> {
               }
               return (
                 <PageTable
-                  columns={this.props.page.table.columns.map(x => x.dbColumn)}
+                  columns={this.props.page.table.columns.map(x => x.columnName)}
                   loading={response.loading}
                 />
               );

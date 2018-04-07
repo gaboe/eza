@@ -3,14 +3,14 @@ import { Query } from "react-apollo";
 import { TableQueryPreviewQuery, TableQueryPreviewQueryVariables } from "../../../../generated-types/types";
 
 const TABLE_QUERY_PREVIEW = gql`
-query TableQueryPreview($columns: [ColumnInputType!]!) {
-  tableQueryPreview(columns: $columns) {
+query TableQueryPreview($table: TableInputType!) {
+  tableQueryPreview(table: $table) {
     rows {
-      key
-      columns {
+      columns{
         columnName
         value
       }
+      key
     }
   }
 }

@@ -1,24 +1,24 @@
 import * as React from "react";
-import { ColumnInputType, TableQueryPreviewQueryVariables } from "../../generated-types/types";
+import { TableQueryPreviewQueryVariables, TableInputType } from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import {
   TableQueryPreviewComponent, TABLE_QUERY_PREVIEW
 } from "../../graphql/queries/generatedApp/tables/TableQueryPreview";
 import { Row, ColumnData } from "../generated-app/PageTable";
 import { PageTable } from "./../generated-app/PageTable";
+import { isNullOrUndefined } from "util";
 
 type Props = {
-  columns: ColumnInputType[],
   header: string,
+  table: TableInputType
 };
 
 class PagePreview extends React.Component<Props> {
 
   render() {
     const variables: TableQueryPreviewQueryVariables = {
-      columns: this.props.columns
+      table: this.props.table
     };
-    console.log("variableds", variables);
     return (
       <>
         <Header as="h3" content={this.props.header} />
@@ -45,7 +45,9 @@ class PagePreview extends React.Component<Props> {
                 });
                 return (
                   <PageTable
-                    columns={this.props.columns.map(x => x.name)}
+                    columns={this.props.table.columns
+                      .filter(x => isNullOrUndefined(x.reference))
+                      .map(x => x.columnName)}
                     loading={response.loading}
                     rows={rows}
                   />
@@ -53,7 +55,9 @@ class PagePreview extends React.Component<Props> {
               }
               return (
                 <PageTable
-                  columns={this.props.columns.map(x => x.name)}
+                  columns={this.props.table.columns
+                    .filter(x => isNullOrUndefined(x.reference))
+                    .map(x => x.columnName)}
                   loading={response.loading}
                 />
               );
