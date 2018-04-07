@@ -3,32 +3,35 @@ import { GetAppLayoutQuery, GetAppLayoutQueryVariables } from "../../../generate
 import { Query } from "react-apollo";
 
 const GET_APP_LAYOUT_QUERY = gql`
-  query GetAppLayout($cid: String!) {
-    app(cid: $cid) {
+query GetAppLayout($cid: String!) {
+  app(cid: $cid) {
+    cid
+    description {
+      name
+    }
+    menuItems {
+      pageCid
+      name
+      rank
+    }
+    pages {
       cid
-      description {
-        name
-      }
-      menuItems {
-        pageCid
-        name
-        rank
-      }
-      pages{
-        cid
-        name
-        table{
-          id
-          columns{
-            dbSchema
-            dbTable
-            dbColumn
-            dbDataType
+      name
+      table {
+        id
+        columns {
+          dbColumn
+          dbDataType
+          table {
+            isPrimary
+            dbSchemaName
+            dbTableName
           }
         }
       }
     }
   }
+}
 `;
 
 class AppLayoutQueryComponent extends Query<GetAppLayoutQuery, GetAppLayoutQueryVariables> { }

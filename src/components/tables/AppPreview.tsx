@@ -19,7 +19,6 @@ max-height: calc(80vh);
 class AppPreview extends React.Component<Props> {
 
   render() {
-    console.log(this.props.pageCid);
     const variables: AppPreviewQueryVariables = {
       columns: this.props.columns,
       pageName: "new page"
@@ -53,7 +52,7 @@ class AppPreview extends React.Component<Props> {
                   ? response.data.appPreview.pages.find(x => x.cid === this.props.pageCid)
                   || response.data.appPreview.pages[0]
                   : response.data.appPreview.pages[0];
-
+                console.log(response);
                 return (
                   <>
                     <LeftLayout
@@ -65,12 +64,15 @@ class AppPreview extends React.Component<Props> {
                         page && page.table &&
                         <PagePreview
                           header={page.name}
-                          columns={page.table.columns.map(x => {
+                          columns={this.props.columns.map(x => {
                             const c: ColumnInputType = {
-                              dataType: x.dbDataType,
-                              name: x.dbColumn,
-                              schemaName: x.dbSchema,
-                              tableName: x.dbTable
+                              dataType: x.dataType,
+                              name: x.name,
+                              table: {
+                                isPrimary: x.table.isPrimary,
+                                schemaName: x.table.schemaName,
+                                tableName: x.table.tableName
+                              }
                             };
                             return c;
                           })}

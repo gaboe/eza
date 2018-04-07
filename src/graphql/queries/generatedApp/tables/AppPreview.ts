@@ -6,10 +6,10 @@ const APP_PREVIEW_QUERY = gql`
 query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
   appPreview(columns: $columns, pageName: $pageName) {
     cid
-    description {
+    description{
       name
     }
-    menuItems {
+    menuItems{
       pageCid
       name
       rank
@@ -20,10 +20,13 @@ query AppPreview($columns: [ColumnInputType!]!, $pageName: String!) {
       table {
         id
         columns {
-          dbSchema
-          dbTable
           dbColumn
           dbDataType
+          table{
+            isPrimary
+            dbSchemaName
+            dbTableName
+          }
         }
       }
     }

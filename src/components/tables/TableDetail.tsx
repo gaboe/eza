@@ -28,12 +28,14 @@ class TableDetail extends React.Component<Props, State> {
     };
   }
   checkColumn = (c: Column) => {
-    console.log(c);
     if (this.state.checkedColumns.filter(x => x.name === c.name).length > 0) {
       this.setState({ checkedColumns: this.state.checkedColumns.filter(x => x.name !== c.name) }, this.checkVisibility);
     } else {
+      const isPrimary = this.props.match.params.name === c.tableName;
       const column: ColumnInputType = {
-        name: c.name, dataType: c.dataType, schemaName: c.schemaName, tableName: c.tableName
+        name: c.name,
+        dataType: c.dataType,
+        table: { isPrimary: isPrimary, schemaName: c.schemaName, tableName: c.tableName }
       };
       this.setState({ checkedColumns: append(column, this.state.checkedColumns) }, this.checkVisibility);
     }

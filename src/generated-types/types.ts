@@ -2,10 +2,16 @@
 //  This file was automatically generated and should not be edited.
 
 export interface ColumnInputType {
-  schemaName: string,
-  tableName: string,
+  table: TableInputType,
   name: string,
   dataType: string,
+};
+
+export interface TableInputType {
+  schemaName: string,
+  tableName: string,
+  // Indicates if this db table is main one in view
+  isPrimary: boolean,
 };
 
 export interface AddPageMutationVariables {
@@ -60,11 +66,15 @@ export interface GetAppLayoutQuery {
         __typename: "PageTableType",
         id: string,
         columns:  Array< {
-          __typename: "PageTableColumnTyp",
-          dbSchema: string,
-          dbTable: string,
+          __typename: "PageTableColumnType",
           dbColumn: string,
           dbDataType: string,
+          table:  {
+            __typename: "PageTableColumnTableType",
+            isPrimary: boolean,
+            dbSchemaName: string,
+            dbTableName: string,
+          },
         } >,
       },
     } >,
@@ -98,11 +108,15 @@ export interface AppPreviewQuery {
         __typename: "PageTableType",
         id: string,
         columns:  Array< {
-          __typename: "PageTableColumnTyp",
-          dbSchema: string,
-          dbTable: string,
+          __typename: "PageTableColumnType",
           dbColumn: string,
           dbDataType: string,
+          table:  {
+            __typename: "PageTableColumnTableType",
+            isPrimary: boolean,
+            dbSchemaName: string,
+            dbTableName: string,
+          },
         } >,
       },
     } >,

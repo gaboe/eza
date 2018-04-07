@@ -18,6 +18,7 @@ class PagePreview extends React.Component<Props> {
     const variables: TableQueryPreviewQueryVariables = {
       columns: this.props.columns
     };
+    console.log("variableds", variables);
     return (
       <>
         <Header as="h3" content={this.props.header} />
