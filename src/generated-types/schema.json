@@ -102,7 +102,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "SchemaType",
+                      "name": "DbSchemaType",
                       "ofType": null
                     }
                   }
@@ -141,7 +141,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "TableType",
+                      "name": "DbTableType",
                       "ofType": null
                     }
                   }
@@ -171,7 +171,7 @@
               "name": "table",
               "type": {
                 "kind": "OBJECT",
-                "name": "TableType",
+                "name": "DbTableType",
                 "ofType": null
               }
             },
@@ -383,7 +383,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "SchemaType",
+          "name": "DbSchemaType",
           "possibleTypes": null
         },
         {
@@ -473,7 +473,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "ReferenceConstrainType",
+                      "name": "DbReferenceConstrainType",
                       "ofType": null
                     }
                   }
@@ -497,7 +497,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "ReferenceConstrainType",
+                      "name": "DbReferenceConstrainType",
                       "ofType": null
                     }
                   }
@@ -508,7 +508,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "TableType",
+          "name": "DbTableType",
           "possibleTypes": null
         },
         {
@@ -621,7 +621,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "constrainName",
+              "name": "constraintName",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -700,7 +700,7 @@
           "inputFields": null,
           "interfaces": [],
           "kind": "OBJECT",
-          "name": "ReferenceConstrainType",
+          "name": "DbReferenceConstrainType",
           "possibleTypes": null
         },
         {

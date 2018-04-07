@@ -163,7 +163,7 @@ export interface TableQueryPreviewQuery {
 
 export interface GetSchemasQuery {
   schemas:  Array< {
-    __typename: "SchemaType",
+    __typename: "DbSchemaType",
     name: string,
   } >,
 };
@@ -174,7 +174,7 @@ export interface TableDetailQueryVariables {
 
 export interface TableDetailQuery {
   table:  {
-    __typename: "TableType",
+    __typename: "DbTableType",
     name: string,
     schemaName: string,
     columns:  Array< {
@@ -185,16 +185,14 @@ export interface TableDetailQuery {
       dataType: string,
     } >,
     referencing:  Array< {
-      __typename: "ReferenceConstrainType",
-      constrainName: string,
+      __typename: "DbReferenceConstrainType",
       referencedTableName: string,
       referencedColumnName: string,
       referencingTableName: string,
       referencingColumnName: string,
     } >,
     referenced:  Array< {
-      __typename: "ReferenceConstrainType",
-      constrainName: string,
+      __typename: "DbReferenceConstrainType",
       referencedTableName: string,
       referencedColumnName: string,
       referencingTableName: string,
@@ -209,7 +207,7 @@ export interface GetTablesBySchemaQueryVariables {
 
 export interface GetTablesBySchemaQuery {
   tables:  Array< {
-    __typename: "TableType",
+    __typename: "DbTableType",
     name: string,
     schemaName: string,
   } >,

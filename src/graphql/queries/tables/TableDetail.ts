@@ -14,14 +14,12 @@ query TableDetail($tableName: String!) {
       dataType
     }
     referencing {
-      constrainName
       referencedTableName
       referencedColumnName
       referencingTableName
       referencingColumnName
     },
     referenced {
-      constrainName
       referencedTableName
       referencedColumnName
       referencingTableName
