@@ -1,6 +1,12 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface TableInputType {
+  schemaName: string,
+  tableName: string,
+  columns: Array< ColumnInputType >,
+};
+
 export interface ColumnInputType {
   schemaName: string,
   tableName: string,
@@ -14,14 +20,8 @@ export interface ReferenceInputType {
   type: string,
 };
 
-export interface TableInputType {
-  schemaName: string,
-  tableName: string,
-  columns: Array< ColumnInputType >,
-};
-
 export interface AddPageMutationVariables {
-  columns: Array< ColumnInputType >,
+  table: TableInputType,
   pageName: string,
 };
 
@@ -74,6 +74,11 @@ export interface GetAppLayoutQuery {
         columns:  Array< {
           __typename: "ColumnType",
           columnName: string,
+          reference:  {
+            __typename: "ColumnReferenceType",
+            primaryKey: string,
+            type: string,
+          } | null,
         } >,
       },
     } >,
@@ -106,12 +111,20 @@ export interface AppPreviewQuery {
       table:  {
         __typename: "TableType",
         id: string,
+        schemaName: string,
+        tableName: string,
         columns:  Array< {
           __typename: "ColumnType",
           columnName: string,
           tableName: string,
           schemaName: string,
           id: string,
+          isFromPrimaryTable: boolean,
+          reference:  {
+            __typename: "ColumnReferenceType",
+            primaryKey: string,
+            type: string,
+          } | null,
         } >,
       },
     } >,

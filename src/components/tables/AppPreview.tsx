@@ -1,5 +1,8 @@
 import * as React from "react";
-import { AppPreviewQueryVariables, TableInputType } from "../../generated-types/types";
+import {
+  AppPreviewQueryVariables,
+  TableInputType, ReferenceInputType, AppPreviewQuery
+} from "../../generated-types/types";
 import { Header } from "semantic-ui-react";
 import { LeftLayout } from "./../generated-app/LeftLayout";
 import { PagePreview } from "./PagePreview";
@@ -9,19 +12,31 @@ import styled from "styled-components";
 type Props = {
   url: string;
   pageCid?: string;
-  table: TableInputType
+  table: TableInputType;
+  pageName: string;
 };
+
+type Reference = NonNullable<NonNullable<
+  AppPreviewQuery["appPreview"]>["pages"][0]["table"]["columns"][0]["reference"]>;
 
 const Wrapper = styled.div`
 max-height: calc(80vh);
 `;
+
+const getReference = (reference: Reference) => {
+  const r: ReferenceInputType = {
+    primaryKey: reference.primaryKey,
+    type: reference.type,
+  };
+  return r;
+};
 
 class AppPreview extends React.Component<Props> {
 
   render() {
     const variables: AppPreviewQueryVariables = {
       table: this.props.table,
-      pageName: "new page"
+      pageName: this.props.pageName
     };
     return (
       <>
@@ -52,6 +67,8 @@ class AppPreview extends React.Component<Props> {
                   ? response.data.appPreview.pages.find(x => x.cid === this.props.pageCid)
                   || response.data.appPreview.pages[0]
                   : response.data.appPreview.pages[0];
+
+                console.log(page);
                 return (
                   <>
                     <LeftLayout
@@ -63,7 +80,20 @@ class AppPreview extends React.Component<Props> {
                         page && page.table &&
                         <PagePreview
                           header={page.name}
-                          table={this.props.table}
+                          table={
+                            {
+                              tableName: page.table.tableName,
+                              schemaName: page.table.schemaName,
+                              columns: page.table.columns.map(x => {
+                                return {
+                                  columnName: x.columnName,
+                                  schemaName: x.schemaName,
+                                  tableName: x.tableName,
+                                  isFromPrimaryTable: x.isFromPrimaryTable,
+                                  reference: x.reference ? getReference(x.reference) : null
+                                };
+                              })
+                            }}
                         />
                       }
                       {

@@ -3,6 +3,7 @@ import { GetAppLayoutQuery, TableQueryQueryVariables } from "../../generated-typ
 import { Header } from "semantic-ui-react";
 import { TableQuery, TABLE_QUERY } from "../../graphql/queries/generatedApp/tables/TableQuery";
 import { PageTable, Row, ColumnData } from "./PageTable";
+import { isNotNullOrUndefined } from "../../utils/Utils";
 
 type Props = {
   page: NonNullable<GetAppLayoutQuery["app"]>["pages"][0]
@@ -21,8 +22,8 @@ class Page extends React.Component<Props> {
         <TableQuery query={TABLE_QUERY} variables={variables} >
           {
             response => {
-
               if (!response.loading && response.data && response.data.tableQuery && response.data.tableQuery.rows) {
+                console.log(response.data.tableQuery);
                 const rows = response.data.tableQuery.rows.map(x => {
                   const row: Row = {
                     key: x.key,
@@ -38,7 +39,9 @@ class Page extends React.Component<Props> {
                 });
                 return (
                   <PageTable
-                    columns={this.props.page.table.columns.map(x => x.columnName)}
+                    columns={this.props.page.table.columns
+                      .filter(x => !isNotNullOrUndefined(x.reference))
+                      .map(x => x.columnName)}
                     loading={response.loading}
                     rows={rows}
                   />

@@ -21,6 +21,10 @@ query GetAppLayout($cid: String!) {
         id
         columns {
           columnName
+          reference {
+            primaryKey
+            type
+          }
         }
       }
     }

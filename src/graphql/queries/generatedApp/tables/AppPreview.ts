@@ -19,11 +19,18 @@ query AppPreview($table: TableInputType!, $pageName: String!) {
       name
       table{
         id
+        schemaName
+        tableName
         columns{
           columnName
           tableName
           schemaName
           id
+          isFromPrimaryTable
+          reference{
+            primaryKey
+            type
+          }
         }
       }
     }

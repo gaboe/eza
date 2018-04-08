@@ -8,6 +8,9 @@ type Props = {
 
 class Referencing extends React.Component<Props> {
   render() {
+    if (this.props.referencing.length === 0) {
+      return null;
+    }
     return (
       <>
         <Header as="h5" >

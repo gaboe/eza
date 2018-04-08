@@ -3,8 +3,8 @@ import { Mutation } from "react-apollo";
 import { AddPageMutationVariables, AddPageMutation } from "../../../generated-types/types";
 
 const ADD_PAGE_MUTATION = gql`
-mutation AddPage($columns: [ColumnInputType!]!,$pageName: String!){
-  addPage(columns: $columns , pageName: $pageName) {
+mutation AddPage($table: TableInputType!,$pageName: String!){
+  addPage(table: $table , pageName: $pageName) {
     cid
   }
 }

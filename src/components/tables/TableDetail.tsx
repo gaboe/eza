@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
-import { Header, List, Button, Checkbox } from "semantic-ui-react";
+import { Header, List, Button, Checkbox, Input, InputOnChangeData } from "semantic-ui-react";
 import { TableDetailQueryComponent, TABLE_DETAIL_QUERY } from "../../graphql/queries/tables/TableDetail";
 import {
   TableDetailQueryVariables, TableDetailQuery, ColumnInputType, AddPageMutationVariables
@@ -12,21 +12,33 @@ import { append } from "ramda";
 import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutations/apps/AddPage";
 import { AppPreview } from "./AppPreview";
 import { isNotNullOrUndefined } from "../../utils/Utils";
+import styled from "styled-components";
+
+const PageNameInput = styled.div`
+  margin: 0.5em 0 1em;
+`;
+
 type Props = RouteComponentProps<{ name: string, cid?: string }>;
 
 type Column = NonNullable<TableDetailQuery["table"]>["columns"][0];
 
 type State = {
   checkedColumns: ColumnInputType[],
-  showPreview: boolean
+  showPreview: boolean,
+  pageName?: string;
 };
 class TableDetail extends React.Component<Props, State> {
+
   constructor(props: Props) {
     super(props);
     this.state = {
       checkedColumns: [],
-      showPreview: false
+      showPreview: false,
     };
+  }
+
+  setPageName = (_: {}, data: InputOnChangeData) => {
+    this.setState({ pageName: data.value });
   }
 
   checkForeignColumn = (c: ColumnInputType) => {
@@ -75,6 +87,25 @@ class TableDetail extends React.Component<Props, State> {
     }
   }
 
+  getTable = (table: NonNullable<TableDetailQuery["table"]>) => {
+    return {
+      tableName: table.name,
+      schemaName: table.schemaName,
+      columns: this.state.checkedColumns.filter(x => {
+        if (x.isFromPrimaryTable || !isNotNullOrUndefined(x.reference)) {
+          return true;
+        }
+        if (this.state.checkedColumns
+          .filter(e => e.schemaName === x.schemaName
+            && e.tableName === x.tableName)
+          .length > 1) {
+          return true;
+        }
+        return false;
+      })
+    };
+  }
+
   render() {
     const pageCid = this.props.match.params.cid;
     const url = `/table/${this.props.match.params.name}`;
@@ -105,6 +136,7 @@ class TableDetail extends React.Component<Props, State> {
                       <Link to={`/${response.data.table.schemaName}-${response.data.table.name}`}>
                         <Button content="Back" />
                       </Link>
+
                       <Header as="h5" >
                         Columns:
                       </Header>
@@ -120,7 +152,6 @@ class TableDetail extends React.Component<Props, State> {
                           })
                         }
                       </List>
-
                       <Referenced
                         checkColumn={this.checkForeignColumn}
                         referenced={response.data.table.referenced}
@@ -139,14 +170,17 @@ class TableDetail extends React.Component<Props, State> {
                               <>
                                 <Row>
                                   <Col xs={6}>
+                                    <PageNameInput>
+                                      <Input placeholder="Set page name" onChange={this.setPageName} />
+                                    </PageNameInput>
                                     <Button
                                       content="Save as view"
                                       onClick={
                                         () => {
                                           if (!response.loading && response.data && response.data.table) {
                                             const mutationVariables: AddPageMutationVariables = {
-                                              columns: this.state.checkedColumns,
-                                              pageName: response.data.table.name
+                                              table: this.getTable(response.data.table),
+                                              pageName: this.state.pageName || response.data.table.name
                                             };
                                             mutation({ variables: mutationVariables });
                                           }
@@ -168,21 +202,8 @@ class TableDetail extends React.Component<Props, State> {
                         <AppPreview
                           pageCid={pageCid}
                           url={url}
-                          table={{
-                            tableName: response.data.table.name,
-                            schemaName: response.data.table.schemaName,
-                            columns: this.state.checkedColumns.filter(x => {
-                              if (x.isFromPrimaryTable || !isNotNullOrUndefined(x.reference)) {
-                                return true;
-                              }
-                              if (this.state.checkedColumns
-                                .filter(e => e.schemaName === x.schemaName && e.tableName === x.tableName)
-                                .length > 1) {
-                                return true;
-                              }
-                              return false;
-                            })
-                          }}
+                          table={this.getTable(response.data.table)}
+                          pageName={this.state.pageName || "New Page"}
                         />
                       </Col>
                     }

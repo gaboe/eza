@@ -13,7 +13,8 @@ query TableQuery($tableID: String!) {
       }
     }
   }
-}`;
+}
+`;
 
 class TableQuery extends Query<TableQueryQuery, TableQueryQueryVariables> { }
 
