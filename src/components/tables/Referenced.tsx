@@ -1,14 +1,13 @@
 import * as React from "react";
-import { List, Header, Button, Checkbox } from "semantic-ui-react";
+import { List, Header, Button } from "semantic-ui-react";
 import {
   TableDetailQuery,
-  GetColumnsByTableNameQueryVariables,
   ReferenceInputType,
-  ColumnInputType
+  ColumnInputType,
 } from "../../generated-types/types";
 import { find } from "lodash";
-import { ColumsByTableQueryComponent, COLUMNS_BY_TABLE_QUERY } from "../../graphql/queries/columns/ColumnsByTableQuery";
 import { append } from "ramda";
+import { ReferenceColumn } from "./ReferenceColumn";
 type Props = {
   referenced: NonNullable<TableDetailQuery["table"]>["referenced"];
   checkColumn: (column: ColumnInputType) => void;
@@ -19,46 +18,7 @@ type State = {
 };
 
 class Referenced extends React.Component<Props, State> {
-  renderColumns = (tableName: string) => {
-    const variables: GetColumnsByTableNameQueryVariables = {
-      tableName
-    };
-    const item = find(this.state.displayedTables, x => x === tableName);
-    if (item === undefined) {
-      return null;
-    } else {
-      return (
-        <ColumsByTableQueryComponent query={COLUMNS_BY_TABLE_QUERY} variables={variables}>
-          {
-            response => {
-              if (!response.loading && response.data && response.data.columns) {
-                return (
-                  response.data.columns.map(x => {
-                    return (
-                      <List.Item
-                        key={x.name}
-                        onClick={() => this.props.checkColumn(
-                          {
-                            columnName: x.name,
-                            isFromPrimaryTable: false,
-                            tableName: x.tableName,
-                            schemaName: x.schemaName
-                          })}
-                      >
-                        <Checkbox />
-                        {` [${x.dataType}]: ${x.name}`}
-                      </List.Item>
-                    );
-                  })
-                );
-              }
-              return null;
-            }
-          }
-        </ColumsByTableQueryComponent>
-      );
-    }
-  }
+
   constructor(props: Props) {
     super(props);
     this.state = { displayedTables: [] };
@@ -71,7 +31,6 @@ class Referenced extends React.Component<Props, State> {
       primaryKey: primaryKey,
       type: "JOIN"
     };
-
     this.props.checkColumn(
       {
         reference: reference,
@@ -87,7 +46,7 @@ class Referenced extends React.Component<Props, State> {
       <>
         <Header as="h5" >
           Referenced tables:
-                      </Header>
+        </Header>
         <List size="large" divided={true} celled={true}>
           {
             this.props.referenced.map(x => {
@@ -103,9 +62,12 @@ class Referenced extends React.Component<Props, State> {
                   <p>
                     With column on {x.referencingColumnName} in {x.referencingTableName}
                   </p>
-                  {
-                    this.renderColumns(x.referencedTableName)
-                  }
+                  <ReferenceColumn
+                    checkColumn={this.props.checkColumn}
+                    tableName={x.referencedTableName}
+                    keyColumn={x.referencingColumnName}
+                    displayedTables={this.state.displayedTables}
+                  />
                   <Button
                     size="mini"
                     content="Show columns"

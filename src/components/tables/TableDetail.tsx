@@ -11,6 +11,7 @@ import { Referencing } from "./Referencing";
 import { append } from "ramda";
 import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutations/apps/AddPage";
 import { AppPreview } from "./AppPreview";
+import { isNotNullOrUndefined } from "../../utils/Utils";
 type Props = RouteComponentProps<{ name: string, cid?: string }>;
 
 type Column = NonNullable<TableDetailQuery["table"]>["columns"][0];
@@ -47,7 +48,6 @@ class TableDetail extends React.Component<Props, State> {
   checkColumn = (
     schemaName: string, tableName: string, columnName: string,
     getColumnInputType: () => ColumnInputType) => {
-    console.log("cols", this.getColumns(schemaName, tableName, columnName));
     if (this.getColumns(schemaName, tableName, columnName)
       .length > 0) {
       this.setState(
@@ -68,7 +68,7 @@ class TableDetail extends React.Component<Props, State> {
   }
 
   checkVisibility = () => {
-    if (this.state.checkedColumns.length === 0) {
+    if (this.state.checkedColumns.filter(x => !isNotNullOrUndefined(x.reference)).length === 0) {
       this.setState({ showPreview: false });
     } else {
       this.setState({ showPreview: true });
@@ -171,7 +171,17 @@ class TableDetail extends React.Component<Props, State> {
                           table={{
                             tableName: response.data.table.name,
                             schemaName: response.data.table.schemaName,
-                            columns: this.state.checkedColumns
+                            columns: this.state.checkedColumns.filter(x => {
+                              if (x.isFromPrimaryTable || !isNotNullOrUndefined(x.reference)) {
+                                return true;
+                              }
+                              if (this.state.checkedColumns
+                                .filter(e => e.schemaName === x.schemaName && e.tableName === x.tableName)
+                                .length > 1) {
+                                return true;
+                              }
+                              return false;
+                            })
                           }}
                         />
                       </Col>
