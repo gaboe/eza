@@ -34,7 +34,12 @@ class PageTable extends React.Component<Props> {
         <Wrapper>
           <GridRow>
             <Col lg={10}>
-              <Table celled={true} selectable={true} >
+              <Table
+                celled={true}
+                selectable={true}
+                color="blue"
+                compact={this.props.columns.length > 3 ? true : false}
+              >
                 <Table.Header>
                   <Table.Row>
                     {this.props.columns.map(x => <Table.HeaderCell key={x}>{x}</Table.HeaderCell>)}
