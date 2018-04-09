@@ -30,7 +30,8 @@ const ReferenceCheckbox: React.SFC<Props> = (props) => {
           columnName: props.column.name,
           isFromPrimaryTable: false,
           tableName: props.column.tableName,
-          schemaName: props.column.schemaName
+          schemaName: props.column.schemaName,
+          isKey: props.column.isKey
         })}
     />
   );

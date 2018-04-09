@@ -12,6 +12,7 @@ query TableDetail($tableName: String!) {
       tableName
       name
       dataType
+      isKey
     }
     referencing {
       referencedSchemaName

@@ -12,6 +12,7 @@ export interface ColumnInputType {
   tableName: string,
   columnName: string,
   isFromPrimaryTable: boolean,
+  isKey: boolean,
   reference?: ReferenceInputType | null,
 };
 
@@ -27,7 +28,7 @@ export interface AddPageMutationVariables {
 
 export interface AddPageMutation {
   addPage:  {
-    __typename: "AppType",
+    __typename: "PageType",
     cid: string,
   },
 };
@@ -43,6 +44,7 @@ export interface GetColumnsByTableNameQuery {
     schemaName: string,
     tableName: string,
     dataType: string,
+    isKey: boolean,
   } >,
 };
 
@@ -120,6 +122,7 @@ export interface AppPreviewQuery {
           schemaName: string,
           id: string,
           isFromPrimaryTable: boolean,
+          isKey: boolean,
           reference:  {
             __typename: "ColumnReferenceType",
             primaryKey: string,
@@ -191,6 +194,7 @@ export interface TableDetailQuery {
       tableName: string,
       name: string,
       dataType: string,
+      isKey: boolean,
     } >,
     referencing:  Array< {
       __typename: "DbReferenceConstrainType",

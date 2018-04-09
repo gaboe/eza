@@ -27,6 +27,7 @@ query AppPreview($table: TableInputType!, $pageName: String!) {
           schemaName
           id
           isFromPrimaryTable
+          isKey
           reference{
             primaryKey
             type

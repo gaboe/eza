@@ -9,6 +9,7 @@ query GetColumnsByTableName($tableName: String!) {
     schemaName
     tableName
     dataType
+    isKey
   }
 }
 `;

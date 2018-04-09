@@ -37,7 +37,8 @@ class Referenced extends React.Component<Props, State> {
         tableName: tableName,
         isFromPrimaryTable: false,
         columnName: column,
-        schemaName: schema
+        schemaName: schema,
+        isKey: true
       });
   }
 

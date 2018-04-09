@@ -13,6 +13,7 @@ import { AddPageMutationComponent, ADD_PAGE_MUTATION } from "../../graphql/mutat
 import { AppPreview } from "./AppPreview";
 import { isNotNullOrUndefined } from "../../utils/Utils";
 import styled from "styled-components";
+import { GET_APP_LAYOUT_QUERY } from "../../graphql/queries/generatedApp/GetAppLayoutQuery";
 
 const PageNameInput = styled.div`
   margin: 0.5em 0 1em;
@@ -51,7 +52,8 @@ class TableDetail extends React.Component<Props, State> {
         columnName: c.name,
         schemaName: c.schemaName,
         tableName: c.tableName,
-        isFromPrimaryTable: isFromPrimaryTable
+        isFromPrimaryTable: isFromPrimaryTable,
+        isKey: c.isKey,
       };
       return column;
     });
@@ -182,7 +184,15 @@ class TableDetail extends React.Component<Props, State> {
                                               table: this.getTable(response.data.table),
                                               pageName: this.state.pageName || response.data.table.name
                                             };
-                                            mutation({ variables: mutationVariables });
+                                            mutation(
+                                              {
+                                                variables: mutationVariables,
+                                                refetchQueries: [{ query: GET_APP_LAYOUT_QUERY }]
+                                              }).then(res => {
+                                                if (res && res.data && res.data.addPage.cid) {
+                                                  this.props.history.push(`/app/${res.data.addPage.cid}`);
+                                                }
+                                              });
                                           }
 
                                         }}

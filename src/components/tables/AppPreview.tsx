@@ -90,6 +90,7 @@ class AppPreview extends React.Component<Props> {
                                   schemaName: x.schemaName,
                                   tableName: x.tableName,
                                   isFromPrimaryTable: x.isFromPrimaryTable,
+                                  isKey: x.isKey,
                                   reference: x.reference ? getReference(x.reference) : null
                                 };
                               })
